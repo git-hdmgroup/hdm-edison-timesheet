@@ -1,0 +1,47 @@
+<h2>{{ 'app.cost-centers' | translate }}</h2>
+<div>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'app.cost-centers.name' | translate }}</th>
+      <th scope="col">{{ 'app.cost-centers.type' | translate }}</th>
+      <th scope="col">{{ 'app.cost-centers.active' | translate }}</th>
+      <th scope="col">{{ 'app.cost-centers.action' | translate }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let costCenter of costCenters">
+      <td>{{ costCenter.name }}</td>
+      <td>{{ costCenter.type | costCenterType | translate }}</td>
+      <td>{{ costCenter.active | isActive | translate }}</td>
+      <td class="text-right text-nowrap">
+        <button
+          type="button"
+          class="btn btn-sm btn-primary margin-right-sm"
+          (click)="openDetail(costCenter)">
+          {{ 'app.button.edit' | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm btn-danger"
+          (click)="remove(costCenter)">
+          {{ 'app.button.delete' | translate }}
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="text-right text-nowrap">
+    <button
+      type="button"
+      class="btn btn-sm btn-info"
+      (click)="add()">
+      {{ 'app.button.add' | translate }}
+    </button>
+  </div>
+
+  <ng-container *ngIf="alertVisible">
+    <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>
+  </ng-container>
+</div>

@@ -1,0 +1,41 @@
+<h2>{{ 'app.responsibles' | translate}}</h2>
+<div>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'app.users.name' | translate }}</th>
+      <th scope="col">{{ 'app.users.surname' | translate }}</th>
+      <th scope="col">{{ 'app.users.email' | translate }}</th>
+      <th scope="col">{{ 'app.users.action' | translate }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let responsible of responsibles">
+      <td>{{ responsible.name }}</td>
+      <td>{{ responsible.surname }}</td>
+      <td>{{ responsible.email }}</td>
+      <td class="text-right text-nowrap">
+        <button
+          type="button"
+          class="btn btn-sm btn-danger"
+          (click)="removeUser(responsible)">
+          {{ 'app.button.delete' | translate }}
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="text-right text-nowrap">
+    <button
+      type="button"
+      class="btn btn-sm btn-info"
+      (click)="add()">
+      {{ 'app.button.add' | translate }}
+    </button>
+  </div>
+
+  <ng-container *ngIf="alertVisible">
+    <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>
+  </ng-container>
+</div>

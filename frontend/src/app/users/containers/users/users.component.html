@@ -1,0 +1,40 @@
+<h2>{{ 'app.users' | translate}}</h2>
+<div>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'app.users.name' | translate }}</th>
+      <th scope="col">{{ 'app.users.surname' | translate }}</th>
+      <th scope="col">{{ 'app.users.email' | translate }}</th>
+      <th scope="col">{{ 'app.users.active' | translate }}</th>
+      <th scope="col">{{ 'app.users.action' | translate }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.name }}</td>
+      <td>{{ user.surname }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.active | isActive | translate }}</td>
+      <td class="text-right text-nowrap">
+        <button
+          type="button"
+          class="btn btn-sm btn-primary margin-right-sm"
+          (click)="openDetail(user)">
+          {{ 'app.button.edit' | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm btn-danger"
+          (click)="remove(user)">
+          {{ 'app.button.delete' | translate }}
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <ng-container *ngIf="alertVisible">
+    <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>
+  </ng-container>
+</div>

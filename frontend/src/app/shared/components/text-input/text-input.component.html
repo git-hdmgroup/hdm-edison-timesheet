@@ -1,0 +1,29 @@
+<div class="form-group">
+  <label>{{ label | translate }}</label>
+
+  <input
+    class="form-control"
+    autocomplete="off"
+    [name]="formControlName"
+    [type]="isPassword ? 'password' : 'text'"
+    [placeholder]="placeholder | translate"
+    (focus)="handleFocus()"
+    [class.is-invalid]="showValidation && control.errors"
+    [class.is-valid]="showValidation && !control.errors"
+    [disabled]="isDisabled"
+    [ngModel]="value"
+    (ngModelChange)="onModelChange($event || null)"/>
+
+  <ng-container *ngIf="showValidation">
+    <div *ngIf="control.hasError('required')" class="invalid-feedback">
+      {{ 'app.form.error.required' | translate }}
+    </div>
+    <div *ngIf="control.hasError('maxlength')" class="invalid-feedback">
+      {{ 'app.form.error.maxlength' | translate }}
+    </div>
+    <div *ngIf="control.hasError('minlength')" class="invalid-feedback">
+      {{ 'app.form.error.minlength' | translate }}
+    </div>
+  </ng-container>
+
+</div>

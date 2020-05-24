@@ -1,0 +1,10 @@
+<div class="d-flex">
+  <ul ngbNav #nav="ngbNav" class="nav-pills" orientation="vertical">
+    <li ngbNavItem="" *ngFor="let navItem of navItems">
+      <a ngbNavLink routerLinkActive="active" [routerLink]="navItem.linkTo"
+         [routerLinkActiveOptions]="{ exact: navItem.exact }">
+        <span>{{ navItem.text | translate }}</span>
+      </a>
+    </li>
+  </ul>
+</div>

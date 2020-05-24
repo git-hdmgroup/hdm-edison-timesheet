@@ -1,0 +1,31 @@
+<h2>{{ 'app.responsible.detail' | translate}}</h2>
+<div class="container">
+  <form novalidate [formGroup]="form" (ngSubmit)="submit()">
+    <div class="row">
+      <div class="flex-column mr-2"></div>
+      <app-select
+        label="app.responsible.detail.responsibles"
+        formControlName="responsible_id"
+        fieldKey="id"
+        fieldValue="full_name"
+        [showValidation]="false"
+        [items]="responsibles"
+        [isLoading]="isLoadingData">
+      </app-select>
+    </div>
+    <div class="row">
+      <div class="col-auto">
+        <button
+          type="submit"
+          class="btn btn-primary btn-block"
+          [disabled]="form.invalid || isLoadingData">
+          {{ isLoadingData ? 'app.button.loading' : 'app.button.save' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-container *ngIf="alertVisible">
+  <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>
+</ng-container>

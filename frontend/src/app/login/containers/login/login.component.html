@@ -1,0 +1,48 @@
+<div class="container">
+
+  <h1 class="m-5 text-center">
+    <span>{{ 'app.timesheet.management' | translate}}</span>
+  </h1>
+
+  <div class="row margin-top-xl">
+    <div class="col-xl-4 offset-xl-4 col-lg-6 offset-lg-3">
+
+      <app-card padding="md">
+        <form [formGroup]="form" novalidate (ngSubmit)="login()">
+
+          <app-text-input
+            label="app.login.username"
+            formControlName="username"
+            placeholder="app.login.username"
+            [showValidation]="false">
+          </app-text-input>
+
+          <app-text-input
+            label="app.login.password"
+            formControlName="password"
+            placeholder="app.login.password"
+            [showValidation]="false"
+            [isPassword]="true">
+          </app-text-input>
+
+          <div class="margin-top-lg text-center">
+            <button
+              type="submit"
+              class="btn btn-primary btn-block"
+              [disabled]="form.invalid || isLoadingLogin"
+              (click)="login()">
+              {{ (isLoadingLogin ? 'app.button.loading' : 'app.button.login') | translate }}
+            </button>
+
+            <ng-container *ngIf="loginErrorVisible">
+              <hr>
+              <div class="text-danger text-center">
+                {{ 'app.error.login' | translate }}
+              </div>
+            </ng-container>
+          </div>
+        </form>
+      </app-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+@import '_colors'
+
+// Override Bootstrap variables.
+$primary: $color-hdm-blue
+$danger: $color-hdm-red
+
+// Font.
+@import '../../node_modules/roboto-fontface/css/roboto/roboto-fontface.css'
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap'
+
+// App variables.
+@import '_variables'
+
+// Margin and padding utils
+$spacing-sizes: ("xs": $spacing-xs, "sm": $spacing-sm, "md": $spacing-md, "lg": $spacing-lg, "xl": $spacing-xl)
+
+@each $name, $value in $spacing-sizes
+
+  .margin-right-#{$name}
+    margin-right: $value !important
+  .margin-left-#{$name}
+    margin-left: $value !important
+  .margin-top-#{$name}
+    margin-top: $value !important
+  .margin-bottom-#{$name}
+    margin-bottom: $value !important
+
+  .padding-right-#{$name}
+    padding-right: $value !important
+  .padding-left-#{$name}
+    padding-left: $value !important
+  .padding-top-#{$name}
+    padding-top: $value !important
+  .padding-bottom-#{$name}
+    padding-bottom: $value !important

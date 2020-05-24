@@ -1,0 +1,66 @@
+<h2>{{ 'app.cities.detail' | translate }}</h2>
+<div class="container">
+
+  <form novalidate [formGroup]="form" (ngSubmit)="submit()">
+    <div class="row">
+      <div class="flex-column mr-2">
+        <app-text-input
+          label="app.cities.city"
+          formControlName="city"
+          placeholder="app.cities.city"
+          [showValidation]="false">
+        </app-text-input>
+      </div>
+
+      <div class="flex-column mr-2">
+        <app-text-input
+          label="app.cities.province_state"
+          formControlName="province_state"
+          placeholder="app.cities.province_state"
+          [showValidation]="false">
+        </app-text-input>
+      </div>
+
+      <div class="flex-column mr-2">
+        <app-text-input
+          label="app.cities.zip_code"
+          formControlName="zip_code"
+          placeholder="app.cities.zip_code"
+          [showValidation]="false">
+        </app-text-input>
+      </div>
+
+      <div class="flex-column mr-2">
+        <app-text-input
+          label="app.cities.nation"
+          formControlName="nation"
+          placeholder="app.cities.nation"
+          [showValidation]="false">
+        </app-text-input>
+      </div>
+
+      <div class="flex-column mr-2">
+        <app-text-input
+          label="app.cities.active"
+          formControlName="active"
+          placeholder="app.cities.active"
+          [showValidation]="false">
+        </app-text-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-auto">
+        <button
+          type="submit"
+          class="btn btn-primary btn-block"
+          [disabled]="form.invalid || isLoadingData">
+          {{ isLoadingData ? 'app.button.loading' : 'app.button.save' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-container *ngIf="alertVisible">
+  <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>
+</ng-container>

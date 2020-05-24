@@ -1,0 +1,52 @@
+<h2>{{ 'app.cost-centers.detail' | translate }}</h2>
+<div class="container">
+
+  <form novalidate [formGroup]="form" (ngSubmit)="submit()">
+    <div class="row">
+      <div class="flex-column mr-2">
+        <app-text-input
+          label="app.cost-centers.name"
+          formControlName="name"
+          placeholder="app.cost-centers.name"
+          [showValidation]="false">
+        </app-text-input>
+      </div>
+
+      <div class="flex-column mr-2">
+        <app-select
+          label="app.cost-centers.type"
+          formControlName="type"
+          fieldKey="type_id"
+          fieldValue="type_name"
+          [showValidation]="false"
+          [items]="costCenterTypes"
+          [translateText]="true"
+          [isLoading]="isLoadingData">
+        </app-select>
+      </div>
+
+      <div class="flex-column mr-2">
+        <app-text-input
+          label="app.cost-centers.active"
+          formControlName="active"
+          placeholder="app.cost-centers.active"
+          [showValidation]="false">
+        </app-text-input>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-auto">
+        <button
+          type="submit"
+          class="btn btn-primary btn-block"
+          [disabled]="form.invalid || isLoadingData">
+          {{ isLoadingData ? 'app.button.loading' : 'app.button.save' | translate }}
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<ng-container *ngIf="alertVisible">
+  <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>
+</ng-container>

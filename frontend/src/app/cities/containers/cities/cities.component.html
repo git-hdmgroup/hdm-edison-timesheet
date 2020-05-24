@@ -1,0 +1,49 @@
+<h2>{{ 'app.cities' | translate }}</h2>
+<div>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">{{ 'app.cities.city' | translate }}</th>
+      <th scope="col">{{ 'app.cities.province_state' | translate }}</th>
+      <th scope="col">{{ 'app.cities.zip_code' | translate }}</th>
+      <th scope="col">{{ 'app.cities.nation' | translate }}</th>
+      <th scope="col">{{ 'app.cities.action' | translate }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let city of cities">
+      <td>{{ city.city }}</td>
+      <td>{{ city.province_state }}</td>
+      <td>{{ city.zip_code }}</td>
+      <td>{{ city.nation | translate }}</td>
+      <td class="text-right text-nowrap">
+        <button
+          type="button"
+          class="btn btn-sm btn-primary margin-right-sm"
+          (click)="openDetail(city)">
+          {{ 'app.button.edit' | translate }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-sm btn-danger"
+          (click)="remove(city)">
+          {{ 'app.button.delete' | translate }}
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="text-right text-nowrap">
+    <button
+      type="button"
+      class="btn btn-sm btn-info"
+      (click)="add()">
+      {{ 'app.button.add' | translate }}
+    </button>
+  </div>
+
+  <ng-container *ngIf="alertVisible">
+    <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>
+  </ng-container>
+</div>

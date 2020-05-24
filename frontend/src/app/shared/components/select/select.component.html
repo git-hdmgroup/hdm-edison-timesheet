@@ -1,0 +1,33 @@
+<div class="form-group">
+  <label>{{ label | translate }}</label>
+
+  <app-loading *ngIf="isLoading"></app-loading>
+
+  <select
+    class="form-control"
+    #selectElement
+    *ngIf="!isLoading"
+    [name]="formControlName"
+    (focus)="handleFocus()"
+    (change)="handleChange(selectElement.value)"
+    [disabled]="isDisabled"
+    [class.is-invalid]="showValidation && control.errors"
+    [class.is-valid]="showValidation && !control.errors">
+    <option
+      *ngIf="showNullOption"
+      [value]="useStringKey ? '' : null"
+      [selected]="value === (useStringKey ? '' : null)">
+      {{ 'app.form.please_select' | translate }}
+    </option>
+    <option
+      *ngFor="let item of items"
+      [selected]="value === item[fieldKey]"
+      [value]="item[fieldKey]">
+      {{ translateText ? (item[fieldValue] | translate) : item[fieldValue] }}
+    </option>
+  </select>
+
+  <div *ngIf="showValidation && control.hasError('required')" class="invalid-feedback">
+    {{ 'app.form.error.required' | translate }}
+  </div>
+</div>
