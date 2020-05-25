@@ -18,6 +18,12 @@ import { IsActivePipe } from './pipes/is-active/is-active.pipe';
 import { SelectComponent } from './components/select/select.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { CostCenterTypePipe } from './pipes/cost-center-type/cost-center-type.pipe';
+import { RolePipe } from './pipes/role/role.pipe';
+import { MomentifyPipe } from './pipes/momentify/momentify.pipe';
+import { DatepickerComponent } from './components/datepicker/datepicker.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { DurationPipe } from './pipes/duration/duration.pipe';
+import { TextareaComponent } from './components/textarea/textarea.component';
 
 const NG_BOOTSTRAP_MODULES = [
   NgbModalModule,
@@ -36,15 +42,20 @@ const NG_BOOTSTRAP_MODULES = [
     AlertComponent,
     SelectComponent,
     LoadingComponent,
+    DatepickerComponent,
+    TextareaComponent,
 
     // Pipes.
     IsActivePipe,
-
     CostCenterTypePipe,
+    RolePipe,
+    MomentifyPipe,
+    DurationPipe,
   ],
   imports: [
     CommonModule,
     ...NG_BOOTSTRAP_MODULES,
+    FontAwesomeModule,
     TranslateModule,
     RouterModule,
     ReactiveFormsModule,
@@ -56,6 +67,7 @@ const NG_BOOTSTRAP_MODULES = [
   exports: [
     CommonModule,
     ...NG_BOOTSTRAP_MODULES,
+    FontAwesomeModule,
     TranslateModule,
     RouterModule,
     ReactiveFormsModule,
@@ -67,10 +79,15 @@ const NG_BOOTSTRAP_MODULES = [
     AlertComponent,
     SelectComponent,
     LoadingComponent,
+    DatepickerComponent,
+    TextareaComponent,
 
     // Pipes.
     IsActivePipe,
     CostCenterTypePipe,
+    RolePipe,
+    MomentifyPipe,
+    DurationPipe,
   ]
 })
 export class SharedModule { }

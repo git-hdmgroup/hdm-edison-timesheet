@@ -35,6 +35,10 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.router.navigate([`/users/${user.id}`]);
   }
 
+  add() {
+    this.router.navigate(['/users/new']);
+  }
+
   remove(user: AppUser) {
     this.user.deactivate(user).toPromise().then((data) => {
       this.alertType = 'success';

@@ -6,6 +6,5 @@ export interface AppUser extends BaseEntity {
   name: string;
   role: number;
   surname: string;
-  active: number;
-  full_name: string;
+  full_name?: string;
 }

@@ -5,5 +5,4 @@ export interface City extends BaseEntity {
   province_state: string;
   zip_code: string;
   nation: string;
-  active: number;
 }

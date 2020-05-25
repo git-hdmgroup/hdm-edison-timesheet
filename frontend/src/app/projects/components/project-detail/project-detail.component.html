@@ -1,0 +1,54 @@
+<h2>{{ 'app.project.detail' | translate }}</h2>
+<div class="container">
+
+    <form [formGroup]="form" novalidate>
+        <div class="row">
+            <div class="flex-column mr-2">
+                <app-text-input
+                        label="app.projects.detail.name"
+                        formControlName="name"
+                        placeholder="app.projects.detail.name"
+                        [showValidation]="false">
+                </app-text-input>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-datepicker
+                        label="app.projects.detail.start_date"
+                        formControlName="start_date">
+                </app-datepicker>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-datepicker
+                        label="app.projects.detail.end_date"
+                        formControlName="end_date">
+                </app-datepicker>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-text-input
+                        label="app.projects.detail.active"
+                        formControlName="active"
+                        placeholder="app.projects.detail.active"
+                        [showValidation]="false">
+                </app-text-input>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <button
+                        type="submit"
+                        class="btn btn-primary btn-block"
+                        (click)="submit()"
+                        [disabled]="form.invalid || isLoadingData">
+                    {{ isLoadingData ? 'app.button.loading' : 'app.button.save' | translate }}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<ng-container *ngIf="alertVisible">
+    <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>
+</ng-container>

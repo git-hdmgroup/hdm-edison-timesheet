@@ -1,0 +1,28 @@
+<div class="form-group">
+  <label>{{ label | translate }}</label>
+
+  <textarea
+    class="form-control"
+    [placeholder]="placeholder"
+    [name]="formControlName"
+    (focus)="handleFocus()"
+    [class.is-invalid]="showValidation && control.errors"
+    [class.is-valid]="showValidation && !control.errors"
+    [ngModel]="value"
+    [disabled]="isDisabled"
+    (ngModelChange)="onModelChange($event || null)">
+  </textarea>
+
+  <ng-container *ngIf="showValidation">
+    <div *ngIf="control.hasError('required')" class="invalid-feedback">
+      {{ 'app.form.error.required' | translate }}
+    </div>
+    <div *ngIf="control.hasError('maxlength')" class="invalid-feedback">
+      {{ 'app.form.error.maxlength' | translate }}
+    </div>
+    <div *ngIf="control.hasError('minlength')" class="invalid-feedback">
+      {{ 'app.form.error.minlength' | translate }}
+    </div>
+  </ng-container>
+
+</div>

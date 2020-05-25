@@ -24,9 +24,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   form: FormGroup = this.formBuilder.group({
     name: ['', Validators.required],
     surname: ['', Validators.required],
-    email: ['', Validators.required],
-    password: ['', Validators.required],
-    newPassword: ['', Validators.required],
+    email: ['', Validators.required]
   });
 
   constructor(private user: UserService,
@@ -36,14 +34,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
 
     const currentUser = this.auth.getCurrentUser();
-    this.profileSubscription = this.user.getUser(currentUser.email, true).subscribe((data) => {
+    this.profileSubscription = this.user.getUserByEmail(currentUser.email, true).subscribe((data) => {
       this.profile = data;
       this.form.setValue({
         name: this.profile.name,
         surname: this.profile.surname,
-        email: this.profile.email,
-        password: '',
-        newPassword: ''
+        email: this.profile.email
       });
     });
   }
@@ -66,7 +62,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       full_name: this.profile.full_name,
     };
 
-    this.user.save(payload).toPromise().then((data) => {
+    this.user.save(payload, false).toPromise().then((data) => {
       this.isLoadingData = false;
       this.alertType = 'success';
       this.alertMessage = 'app.user-profile.update';
@@ -79,6 +75,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.isLoadingData = false;
       this.alertType = 'danger';
       this.alertMessage = 'app.generic.error';
+      this.alertVisible = true;
 
       setTimeout(() => {
         this.alertVisible = false;

@@ -1,0 +1,48 @@
+<h2>{{ 'app.positions.detail' | translate }}</h2>
+<div class="container">
+
+    <form novalidate [formGroup]="form" (ngSubmit)="submit()">
+        <div class="row">
+            <div class="flex-column mr-2">
+                <app-text-input
+                        label="app.positions.detail.name"
+                        formControlName="name"
+                        placeholder="app.positions.detail.name"
+                        [showValidation]="false">
+                </app-text-input>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-text-input
+                        label="app.positions.detail.cost"
+                        formControlName="cost"
+                        placeholder="app.positions.detail.cost"
+                        [showValidation]="false">
+                </app-text-input>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-text-input
+                        label="app.positions.detail.active"
+                        formControlName="active"
+                        placeholder="app.positions.detail.active"
+                        [showValidation]="false">
+                </app-text-input>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <button
+                        type="submit"
+                        class="btn btn-primary btn-block"
+                        [disabled]="form.invalid || isLoadingData">
+                    {{ isLoadingData ? 'app.button.loading' : 'app.button.save' | translate }}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<ng-container *ngIf="alertVisible">
+    <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>
+</ng-container>

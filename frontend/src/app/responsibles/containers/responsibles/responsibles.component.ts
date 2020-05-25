@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { AppUser } from '../../../_interfaces/entities/app-user';
 import { UserService } from '../../../_services/user/user.service';
 import { Router } from '@angular/router';
-import { ROLES } from '../../../_constants/roles';
+import { ROLES, ROLES_IDX } from '../../../_constants/roles';
 
 @Component({
   selector: 'app-responsibles',
@@ -27,7 +27,7 @@ export class ResponsiblesComponent implements OnInit, OnDestroy {
 
     this.isLoadingData = true;
 
-    this.userSubscription = this.user.getAllByRole(ROLES.RESPONSIBLE, true).subscribe((data) => {
+    this.userSubscription = this.user.getAllByRole(ROLES[ROLES_IDX.RESPONSIBLE].role_id, true).subscribe((data) => {
       this.responsibles = data;
       this.isLoadingData = false;
     });
@@ -43,9 +43,9 @@ export class ResponsiblesComponent implements OnInit, OnDestroy {
 
   removeUser(user: AppUser) {
 
-    user.role = ROLES.USER;
+    user.role = ROLES[ROLES_IDX.USER].role_id;
 
-    this.user.save(user).toPromise().then((data) => {
+    this.user.save(user, false).toPromise().then((data) => {
       this.alertType = 'success';
       this.alertMessage = 'app.responsible.removed';
       this.alertVisible = true;

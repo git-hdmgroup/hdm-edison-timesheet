@@ -83,6 +83,7 @@ export class CostCenterDetailComponent implements OnInit, OnDestroy {
       this.isLoadingData = false;
       this.alertType = 'danger';
       this.alertMessage = 'app.generic.error';
+      this.alertVisible = true;
 
       setTimeout(() => {
         this.alertVisible = false;

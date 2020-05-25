@@ -1,1 +1,80 @@
-<p>user-detail works!</p>
+<h2>{{ 'app.users.detail' | translate }}</h2>
+<div class="container">
+
+    <form [formGroup]="form" novalidate>
+        <div class="row">
+            <div class="flex-column mr-2">
+                <app-text-input
+                        label="app.users.detail.name"
+                        formControlName="name"
+                        placeholder="app.users.detail.name"
+                        [showValidation]="false">
+                </app-text-input>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-text-input
+                        label="app.users.detail.surname"
+                        formControlName="surname"
+                        placeholder="app.users.detail.surname"
+                        [showValidation]="false">
+                </app-text-input>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-text-input
+                        label="app.users.detail.email"
+                        formControlName="email"
+                        placeholder="app.users.detail.email"
+                        [showValidation]="false">
+                </app-text-input>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-text-input
+                        label="app.users.detail.ldap_id"
+                        formControlName="ldap_id"
+                        placeholder="app.users.detail.ldap_id"
+                        [showValidation]="false">
+                </app-text-input>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-select
+                        label="app.users.detail.role"
+                        formControlName="role"
+                        fieldKey="role_id"
+                        fieldValue="role_name"
+                        [showValidation]="false"
+                        [items]="roles"
+                        [translateText]="true"
+                        [isLoading]="isLoadingData">
+                </app-select>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-text-input
+                        label="app.users.detail.active"
+                        formControlName="active"
+                        placeholder="app.users.detail.active"
+                        [showValidation]="false">
+                </app-text-input>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <button
+                        type="submit"
+                        class="btn btn-primary btn-block"
+                        (click)="submit()"
+                        [disabled]="form.invalid || isLoadingData">
+                    {{ isLoadingData ? 'app.button.loading' : 'app.button.save' | translate }}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<ng-container *ngIf="alertVisible">
+    <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>
+</ng-container>

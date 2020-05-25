@@ -1,0 +1,28 @@
+<div class="form-group">
+  <label>{{ label | translate }}</label>
+
+  <div class="input-group">
+    <input
+      class="form-control"
+      [name]="formControlName"
+      [class.is-invalid]="(showValidation && control.errors) || isInvalidDate"
+      [class.is-valid]="showValidation && !control.errors"
+      [placeholder]="placeholder"
+      [disabled]="isDisabled"
+      [ngModel]="value"
+      (ngModelChange)="handleChange($event)"
+      ngbDatepicker #d="ngbDatepicker">
+    <div class="input-group-append">
+      <button class="btn" [ngClass]="'btn-outline-' + color" [disabled]="isDisabled" (click)="d.toggle()" type="button">
+        <fa-icon [icon]="icon" [fixedWidth]="true"></fa-icon>
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="showValidation && control.hasError('required')" class="invalid-feedback d-block">
+    {{ 'app.generic.error.required' | translate }}
+  </div>
+  <div *ngIf="isInvalidDate" class="invalid-feedback d-block">
+    {{ 'app.generic.error.invalid_date' | translate }}
+  </div>
+</div>

@@ -31,6 +31,12 @@ export const NAV_ITEMS: NavItem[] = [
     exact: true,
   },
   {
+    text: 'nav.positions',
+    linkTo: '/positions',
+    role: 2,
+    exact: true,
+  },
+  {
     text: 'nav.users',
     linkTo: '/users',
     role: 100,
