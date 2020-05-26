@@ -25,6 +25,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DurationPipe } from './pipes/duration/duration.pipe';
 import { TextareaComponent } from './components/textarea/textarea.component';
 import { BooleanInputComponent } from './components/boolean-input/boolean-input.component';
+import { CalendarComponent } from './components/calendar/calendar.component';
 
 const NG_BOOTSTRAP_MODULES = [
   NgbModalModule,
@@ -46,6 +47,7 @@ const NG_BOOTSTRAP_MODULES = [
     DatepickerComponent,
     TextareaComponent,
     BooleanInputComponent,
+    CalendarComponent,
 
     // Pipes.
     IsActivePipe,
@@ -84,6 +86,7 @@ const NG_BOOTSTRAP_MODULES = [
     DatepickerComponent,
     TextareaComponent,
     BooleanInputComponent,
+    CalendarComponent,
 
     // Pipes.
     IsActivePipe,

@@ -1,7 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { City } from '../../../_interfaces/entities/city';
-import { CityService } from '../../../_services/city/city.service';
 import { Router } from '@angular/router';
 import { HourView } from '../../../_interfaces/entities/hour-view';
 import { HourService } from '../../../_services/hour/hour.service';
@@ -23,8 +21,14 @@ export class HoursComponent implements OnInit, OnDestroy {
   alertType: string;
   alertMessage: string;
 
-  model: NgbDateStruct;
-  date: { year: number, month: number };
+  highlight: NgbDateStruct[] = [
+    {year: 2020, month: 5, day: 26},
+    {year: 2020, month: 5, day: 14},
+    {year: 2020, month: 5, day: 12},
+    {year: 2020, month: 5, day: 23},
+    {year: 2020, month: 5, day: 31},
+    {year: 2020, month: 5, day: 10},
+  ];
 
   constructor(private hour: HourService,
               private auth: AuthService,
