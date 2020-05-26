@@ -8,7 +8,7 @@ export class DurationPipe implements PipeTransform {
 
   transform(value: any, ...args: any[]): string {
     const duration = moment.duration(value, 'milliseconds');
-    return duration.asDays();
+    return duration.asDays().toString();
   }
 
 }

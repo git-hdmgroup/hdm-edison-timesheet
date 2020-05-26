@@ -7,6 +7,7 @@ import { HourView } from '../../../_interfaces/entities/hour-view';
 import { HourService } from '../../../_services/hour/hour.service';
 import { Hour } from '../../../_interfaces/entities/hour';
 import { AuthService } from '../../../_services/auth/auth.service';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-hours',
@@ -22,9 +23,13 @@ export class HoursComponent implements OnInit, OnDestroy {
   alertType: string;
   alertMessage: string;
 
+  model: NgbDateStruct;
+  date: { year: number, month: number };
+
   constructor(private hour: HourService,
               private auth: AuthService,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   ngOnInit(): void {
     const currentUser = this.auth.getCurrentUser();

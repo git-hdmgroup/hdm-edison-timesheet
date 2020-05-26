@@ -1,0 +1,22 @@
+<div class="form-group">
+  <label>{{ label | translate }}</label>
+
+  <div
+    class="btn-group btn-group-toggle btn-block boolean-input__btn-group"
+    ngbRadioGroup
+    [ngModel]="value"
+    [disabled]="isDisabled"
+    (ngModelChange)="onModelChange($event)">
+    <label ngbButtonLabel [ngClass]="showValidation && control.errors ? 'btn-outline-danger' : ('btn-outline-' + color)">
+      <input (focus)="handleFocus()" [name]="formControlName" ngbButton type="radio" [value]="true"> {{ labelTrue | translate }}
+    </label>
+    <label ngbButtonLabel [ngClass]="showValidation && control.errors ? 'btn-outline-danger' : ('btn-outline-' + color)">
+      <input (focus)="handleFocus()" [name]="formControlName" ngbButton type="radio" [value]="false"> {{ labelFalse | translate }}
+    </label>
+  </div>
+
+  <div *ngIf="showValidation && control.hasError('required')" class="invalid-feedback d-block">
+    {{ 'app.form.error.required' | translate }}
+  </div>
+
+</div>

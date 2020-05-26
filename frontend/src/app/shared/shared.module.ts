@@ -7,7 +7,7 @@ import {
   NgbDropdownModule,
   NgbButtonsModule,
   NgbNavModule,
-  NgbAlertModule,
+  NgbAlertModule
 } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -24,6 +24,7 @@ import { DatepickerComponent } from './components/datepicker/datepicker.componen
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DurationPipe } from './pipes/duration/duration.pipe';
 import { TextareaComponent } from './components/textarea/textarea.component';
+import { BooleanInputComponent } from './components/boolean-input/boolean-input.component';
 
 const NG_BOOTSTRAP_MODULES = [
   NgbModalModule,
@@ -44,6 +45,7 @@ const NG_BOOTSTRAP_MODULES = [
     LoadingComponent,
     DatepickerComponent,
     TextareaComponent,
+    BooleanInputComponent,
 
     // Pipes.
     IsActivePipe,
@@ -81,6 +83,7 @@ const NG_BOOTSTRAP_MODULES = [
     LoadingComponent,
     DatepickerComponent,
     TextareaComponent,
+    BooleanInputComponent,
 
     // Pipes.
     IsActivePipe,

@@ -13,3 +13,13 @@ export const fromMilliseconds = (unit: 'h' | 'm' | 's', value) => {
     case 's': return value / 1000;
   }
 };
+
+export const booleanToNumber = (value) => {
+
+  switch (value) {
+    case undefined: return value;
+    case true: return 1;
+    case false: return 0;
+  }
+};
+

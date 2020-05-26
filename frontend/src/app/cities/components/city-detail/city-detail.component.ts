@@ -4,6 +4,7 @@ import { CityService } from '../../../_services/city/city.service';
 import { Subscription } from 'rxjs';
 import { City } from 'src/app/_interfaces/entities/city';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { booleanToNumber } from '../../../_utils/utils';
 
 @Component({
   selector: 'app-city-detail',
@@ -68,12 +69,11 @@ export class CityDetailComponent implements OnInit, OnDestroy {
       zip_code: this.form.value.zip_code,
       province_state: this.form.value.province_state,
       city: this.form.value.city,
-      active: this.form.value.active,
+      active: booleanToNumber(this.form.value.active),
       id: this.isNewCity ? undefined : this.selectedCity.id
     };
 
     this.city.save(payload, this.isNewCity).toPromise().then((data) => {
-      console.log(data);
       this.isLoadingData = false;
       this.alertType = 'success';
       this.alertMessage = this.isNewCity ? 'app.cities.insert' : 'app.cities.update';

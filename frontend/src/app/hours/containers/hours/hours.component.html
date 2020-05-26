@@ -1,5 +1,7 @@
 <h2>{{ 'app.hours' | translate }}</h2>
 <div>
+    <ngb-datepicker #dp [(ngModel)]="model" (navigate)="date = $event.next"></ngb-datepicker>
+    <hr/>
     <table class="table table-striped">
         <thead>
         <tr>
