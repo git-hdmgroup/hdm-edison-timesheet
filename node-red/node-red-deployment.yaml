@@ -13,15 +13,14 @@ spec:
       app: nodered
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: nodered
     spec:
-      containers:
       volumes:
       - name: node-red-pv-storage
       persistentVolumeClaim:
         claimName: node-red-pvc
+      containers:
       - image: nodered/node-red:1.0.4-12-minimal
         imagePullPolicy: IfNotPresent
         name: nodered

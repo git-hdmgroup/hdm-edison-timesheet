@@ -13,7 +13,6 @@ spec:
       app: postgres
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: postgres
     spec:

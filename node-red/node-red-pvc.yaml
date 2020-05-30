@@ -3,7 +3,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: node-red-pvc
   namespace: edison-ts
-  labels:
 spec:
   accessModes:
     - ReadWriteMany
