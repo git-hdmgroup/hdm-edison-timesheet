@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hasura
+    hasuraService: custom
+  name: hasura
+  namespace: edison-ts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodered
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nodered
+    spec:
+      containers:
+      volumes:
+      - name: node-red-pv-storage
+      persistentVolumeClaim:
+        claimName: node-red-pvc
+      - image: nodered/node-red:1.0.4-12-minimal
+        imagePullPolicy: IfNotPresent
+        name: nodered
+        env:
+        - name: TZ
+          value: UTC
+        - name: NODE_RED_ENABLE_SAFE_MODE
+          value: "false"
+        - name: NODE_RED_ENABLE_PROJECTS
+          value: "false"
+        - name: NODE_OPTIONS
+        - name: FLOWS
+          value: flows.json
+        ports:
+        - containerPort: 1880
+          protocol: TCP
+        resources: {}
+      volumeMounts:
+        - mountPath: "/data"
+          name: node-red-pv-storage

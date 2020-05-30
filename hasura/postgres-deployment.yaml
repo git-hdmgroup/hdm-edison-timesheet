@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: postgres
+    hasuraService: custom
+  name: postgres
+  namespace: edison-ts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: postgres
+    spec:
+      volumes:
+      - name: postgres-pv-storage
+      persistentVolumeClaim:
+        claimName: postgres-pvc
+      containers:
+      - image: postgres/postgres:12
+        imagePullPolicy: IfNotPresent
+        name: postgres
+        env:
+        - name: POSTGRES_PASSWORD
+          value: postgrespassword
+        ports:
+        - containerPort: 5432
+          protocol: TCP
+        resources: {}
+      volumeMounts:
+        - mountPath: "/var/lib/postgresql/data"
+          name: postgres-pv-storage
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: postgres
+  name: postgres
+  namespace: edison-ts
+spec:
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432
+  selector:
+    app: postgres
+  type: ClusterIP
