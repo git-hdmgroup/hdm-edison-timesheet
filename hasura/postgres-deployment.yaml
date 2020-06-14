@@ -32,8 +32,10 @@ spec:
           protocol: TCP
         resources: {}
       volumeMounts:
-        - mountPath: "/var/lib/postgresql/data"
-          name: postgres-pv-storage
+        - name: postgres-pv-storage
+          mountPath: "/var/lib/postgresql/data"
+          persistentVolumeClaim:
+            claimName: postgres-pvc
 ---
 apiVersion: v1
 kind: Service
