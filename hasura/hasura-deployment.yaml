@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: hasura
+    hasuraService: custom
+  name: hasura
+  namespace: edison-ts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hasura
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: hasura
+    spec:
+      containers:
+      - image: hasura/graphql-engine:v1.2.1
+        imagePullPolicy: IfNotPresent
+        name: hasura
+        env:
+        - name: HASURA_GRAPHQL_DATABASE_URL
+          value: postgres://postgres:postgrespassword@postgres:5432/postgres
+        - name: HASURA_GRAPHQL_ENABLE_CONSOLE
+          value: "true"
+        - name: HASURA_GRAPHQL_ENABLED_LOG_TYPES
+          value: startup, http-log, webhook-log, websocket-log, query-log
+        - name: HASURA_GRAPHQL_ADMIN_SECRET
+          value: admin
+        - name: HASURA_GRAPHQL_JWT_SECRET
+          value: '{ "type": "HS256", "key": "supercalifragilistichespiralidoso" }'
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: hasura
+  name: hasura
+  namespace: edison-ts
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  selector:
+    app: hasura
+  type: ClusterIP
