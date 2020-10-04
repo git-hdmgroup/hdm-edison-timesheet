@@ -12,7 +12,10 @@ export class AppInitService {
   }
 
   init() {
-    this.setLocale(environment.defaultLanguage);
+    const browserLang = this.translate.getBrowserLang();
+    const lang = browserLang ? browserLang : environment.defaultLanguage;
+    console.log(lang);
+    this.setLocale(lang);
   }
 
   setLocale(lang: string) {

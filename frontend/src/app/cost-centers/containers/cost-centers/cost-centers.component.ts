@@ -4,6 +4,9 @@ import { City } from '../../../_interfaces/entities/city';
 import { Router } from '@angular/router';
 import { CostCenter } from '../../../_interfaces/entities/cost-center';
 import { CostCenterService } from '../../../_services/cost-center/cost-center.service';
+import { BupTableColumns } from '../../../shared/components/table/table.component';
+import { IsActivePipe } from '../../../shared/pipes/is-active/is-active.pipe';
+import { CostCenterTypePipe } from '../../../shared/pipes/cost-center-type/cost-center-type.pipe';
 
 @Component({
   selector: 'app-cost-centers',
@@ -18,6 +21,13 @@ export class CostCentersComponent implements OnInit, OnDestroy {
   alertVisible = false;
   alertType: string;
   alertMessage: string;
+
+  columns: BupTableColumns[] = [
+    { name: 'name', label: 'app.cost-centers.name' },
+    { name: 'description', label: 'app.cost-centers.description' },
+    { name: 'garrison', label: 'app.cost-centers.garrison' },
+    { name: 'id_geo_area', label: 'app.cost-centers.id_geo_area' }
+  ];
 
   constructor(private costCenter: CostCenterService,
               private router: Router) { }

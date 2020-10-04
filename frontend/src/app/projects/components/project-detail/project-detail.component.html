@@ -5,34 +5,62 @@
         <div class="row">
             <div class="flex-column mr-2">
                 <app-text-input
-                        label="app.projects.detail.name"
-                        formControlName="name"
-                        placeholder="app.projects.detail.name"
+                        label="app.projects.detail.description"
+                        formControlName="description"
+                        placeholder="app.projects.detail.description"
                         [showValidation]="false">
                 </app-text-input>
             </div>
 
             <div class="flex-column mr-2">
-                <app-datepicker
-                        label="app.projects.detail.start_date"
-                        formControlName="start_date">
-                </app-datepicker>
+                <app-select
+                        label="app.projects.detail.city"
+                        formControlName="city"
+                        fieldKey="id"
+                        fieldValue="city"
+                        [showValidation]="false"
+                        [items]="cities"
+                        [translateText]="true"
+                        [isLoading]="isLoadingData">
+                </app-select>
             </div>
 
             <div class="flex-column mr-2">
-                <app-datepicker
-                        label="app.projects.detail.end_date"
-                        formControlName="end_date">
-                </app-datepicker>
+                <app-select
+                        label="app.projects.detail.cost_center"
+                        formControlName="cost_center"
+                        fieldKey="id"
+                        fieldValue="name"
+                        [showValidation]="false"
+                        [items]="costCenters"
+                        [translateText]="true"
+                        [isLoading]="isLoadingData">
+                </app-select>
             </div>
 
             <div class="flex-column mr-2">
                 <app-text-input
-                        label="app.projects.detail.active"
-                        formControlName="active"
-                        placeholder="app.projects.detail.active"
+                        label="app.projects.detail.cost_asset"
+                        formControlName="cost_asset"
+                        placeholder="app.projects.detail.cost_asset"
                         [showValidation]="false">
                 </app-text-input>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-text-input
+                        label="app.projects.detail.typology"
+                        formControlName="typology"
+                        placeholder="app.projects.detail.typology"
+                        [showValidation]="false">
+                </app-text-input>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-boolean-input
+                        label="app.projects.detail.active"
+                        formControlName="active">
+                </app-boolean-input>
             </div>
         </div>
         <div class="row">

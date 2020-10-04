@@ -1,51 +1,11 @@
 <h2>{{ 'app.projects' | translate }}</h2>
-<div>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">{{ 'app.projects.name' | translate }}</th>
-            <th scope="col">{{ 'app.projects.start' | translate }}</th>
-            <th scope="col">{{ 'app.projects.end' | translate }}</th>
-            <th scope="col">{{ 'app.projects.duration' | translate }}</th>
-            <th scope="col">{{ 'app.projects.active' | translate }}</th>
-            <th scope="col" class="text-right">{{ 'app.projects.action' | translate }}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let project of projects">
-            <td>{{ project.name }}</td>
-            <td>{{ project.start_date | momentify: 'DD/MM/YYYY' }}</td>
-            <td>{{ project.end_date | momentify: 'DD/MM/YYYY' }}</td>
-            <td>{{ project.duration | duration }} {{ 'app.projects.detail.days' | translate }}</td>
-            <td>{{ project.active | isActive | translate }}</td>
-            <td class="text-right text-nowrap">
-                <button
-                        type="button"
-                        class="btn btn-sm btn-primary margin-right-sm"
-                        (click)="openDetail(project)">
-                    {{ 'app.button.edit' | translate }}
-                </button>
-                <button
-                        type="button"
-                        class="btn btn-sm btn-danger"
-                        (click)="remove(project)">
-                    {{ 'app.button.delete' | translate }}
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<app-table
+        [data]="projects"
+        [columns]="columns"
+        (add)="add()"
+        (edit)="openDetail($event)"
+        (remove)="remove($event)"></app-table>
 
-    <div class="text-right text-nowrap">
-        <button
-                type="button"
-                class="btn btn-sm btn-info"
-                (click)="add()">
-            {{ 'app.button.add' | translate }}
-        </button>
-    </div>
-
-    <ng-container *ngIf="alertVisible">
-        <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>
-    </ng-container>
-</div>
+<ng-container *ngIf="alertVisible">
+    <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>
+</ng-container>

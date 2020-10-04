@@ -48,7 +48,7 @@ export function initializeApp(appInitService: AppInitService) {
         useFactory: (createTranslateLoader),
         deps: [HttpClient]
       }
-    }),
+    })
   ],
   providers: [
     {

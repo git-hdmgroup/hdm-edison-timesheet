@@ -4,6 +4,7 @@ import { AppUser } from '../../../_interfaces/entities/app-user';
 import { UserService } from '../../../_services/user/user.service';
 import { Router } from '@angular/router';
 import { ROLES, ROLES_IDX } from '../../../_constants/roles';
+import { BupTableColumns } from '../../../shared/components/table/table.component';
 
 @Component({
   selector: 'app-responsibles',
@@ -19,6 +20,12 @@ export class ResponsiblesComponent implements OnInit, OnDestroy {
   alertVisible = false;
   alertType: string;
   alertMessage: string;
+
+  columns: BupTableColumns[] = [
+    { name: 'name', label: 'app.users.name' },
+    { name: 'surname', label: 'app.users.surname' },
+    { name: 'email', label: 'app.users.email' },
+  ];
 
   constructor(private user: UserService,
               private router: Router) { }

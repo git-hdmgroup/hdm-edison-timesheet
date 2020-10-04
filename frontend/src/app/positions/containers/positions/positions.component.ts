@@ -3,6 +3,9 @@ import { Subscription } from 'rxjs';
 import { Position } from '../../../_interfaces/entities/position';
 import { Router } from '@angular/router';
 import { PositionService } from '../../../_services/position/position.service';
+import { BupTableColumns } from '../../../shared/components/table/table.component';
+import { IsActivePipe } from '../../../shared/pipes/is-active/is-active.pipe';
+import { commonColumns } from '../../../_constants/table-commons';
 
 @Component({
   selector: 'app-positions',
@@ -17,6 +20,12 @@ export class PositionsComponent implements OnInit, OnDestroy {
   alertVisible = false;
   alertType: string;
   alertMessage: string;
+
+  columns: BupTableColumns[] = [
+    { name: 'name', label: 'app.positions.name' },
+    { name: 'cost', label: 'app.positions.cost' },
+    ...commonColumns
+  ];
 
   constructor(private position: PositionService,
               private router: Router) { }

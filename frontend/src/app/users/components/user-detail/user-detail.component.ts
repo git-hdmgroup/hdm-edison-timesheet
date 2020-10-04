@@ -6,6 +6,9 @@ import { UserService } from '../../../_services/user/user.service';
 import { AuthService } from '../../../_services/auth/auth.service';
 import { ROLES } from '../../../_constants/roles';
 import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
+import { PositionService } from '../../../_services/position/position.service';
+import { Position } from '../../../_interfaces/entities/position';
 
 @Component({
   selector: 'app-user-detail',
@@ -15,8 +18,10 @@ import { ActivatedRoute } from '@angular/router';
 export class UserDetailComponent implements OnInit, OnDestroy {
 
   userSubscription: Subscription;
+  positionSubscription: Subscription;
 
   selectedUser: AppUser;
+  positions: Position[] = [];
   roles = ROLES;
   isLoadingData = false;
   isNewUser = false;
@@ -30,17 +35,25 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     surname: ['', Validators.required],
     email: ['', Validators.required],
     role: ['', Validators.required],
-    ldap_id: ['', Validators.required],
-    active: [null, Validators.required]
+    cost_center_sender: ['', Validators.required],
+    valid_from: ['', Validators.required],
+    valid_to: ['', Validators.required],
+    position: ['', Validators.required]
   });
 
   constructor(private route: ActivatedRoute,
               private user: UserService,
+              private position: PositionService,
               private auth: AuthService,
               private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((paramMap) => {
+
+      // Positions.
+      this.positionSubscription = this.position.getAll(false).subscribe((data) => {
+        this.positions = data;
+      });
 
       const id = paramMap.get('id');
       if (id === 'new') {
@@ -52,8 +65,10 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             name: this.selectedUser.name,
             surname: this.selectedUser.surname,
             email: this.selectedUser.email,
-            ldap_id: this.selectedUser.ldap_id,
-            active: this.selectedUser.active,
+            cost_center_sender: this.selectedUser.cost_center_sender,
+            valid_from: moment(this.selectedUser.valid_from).format('YYYY-MM-DD'),
+            valid_to: moment(this.selectedUser.valid_to).format('YYYY-MM-DD'),
+            position: this.selectedUser.id_position,
             role: this.selectedUser.role
           });
         });
@@ -63,6 +78,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();
+    this.positionSubscription?.unsubscribe();
   }
 
   submit() {
@@ -73,9 +89,11 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       name: this.form.value.name,
       email: this.form.value.email,
       id: this.isNewUser ? undefined : this.selectedUser.id,
-      ldap_id: this.form.value.ldap_id,
       role: this.form.value.role,
-      active: this.form.value.active
+      id_position: this.form.value.position,
+      cost_center_sender: this.form.value.cost_center_sender,
+      valid_from: moment(this.form.value.valid_from, 'YYYY-MM-DD').utc().valueOf(),
+      valid_to: moment(this.form.value.valid_to, 'YYYY-MM-DD').utc().valueOf()
     };
 
     this.user.save(payload, this.isNewUser).toPromise().then((data) => {

@@ -19,7 +19,7 @@ export class CityService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} city {
           cities(where: {id: {_eq: ${id}}}) {
-            city id nation province_state zip_code active updated_at created_at
+            id city scope id_geo_area valid_from valid_to created_at updated_at
           }
         }
       `
@@ -33,7 +33,7 @@ export class CityService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} city {
           cities {
-            city id nation province_state zip_code active updated_at created_at
+            id city scope id_geo_area valid_from valid_to created_at updated_at
           }
         }
       `
@@ -47,14 +47,14 @@ export class CityService {
       mutation city {
         update_cities(where: {id: {_eq: ${city.id}}}, _set: {
           city: "${city.city}",
-          province_state: "${city.province_state}",
-          zip_code: "${city.zip_code}",
-          nation: "${city.nation}",
-          active: ${city.active},
+          scope: "${city.scope}",
+          id_geo_area: "${city.id_geo_area}",
+          valid_from: ${city.valid_from},
+          valid_to: ${city.valid_to},
           updated_at: ${Date.now()}
         }) {
           returning {
-            city id nation province_state zip_code active updated_at created_at
+            id city scope id_geo_area valid_from valid_to created_at updated_at
           }
         }
       }`;
@@ -62,16 +62,16 @@ export class CityService {
     const insertQuery = gql`
       mutation city {
         insert_cities(objects: {
-          active: ${city.active},
           city: "${city.city}",
-          nation: "${city.nation}",
-          province_state: "${city.province_state}",
-          zip_code: "${city.zip_code}",
+          scope: "${city.scope}",
+          id_geo_area: "${city.id_geo_area}",
+          valid_from: ${city.valid_from},
+          valid_to: ${city.valid_to},
           updated_at: ${Date.now()},
           created_at: ${Date.now()}
         }) {
           returning {
-            active city id nation province_state zip_code updated_at created_at
+            id city scope id_geo_area valid_from valid_to created_at updated_at
           }
         }
       }`;

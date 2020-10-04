@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NgbDate, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-calendar',
@@ -11,6 +11,10 @@ export class CalendarComponent implements OnInit {
   @Input()
   daysToHighlight: NgbDateStruct[];
 
+  @Output()
+  selectedDay = new EventEmitter<NgbDateStruct>();
+
+  test: NgbDate;
   model: NgbDateStruct;
   date: { year: number, month: number };
 
@@ -23,5 +27,13 @@ export class CalendarComponent implements OnInit {
   dateHighlighted(date: NgbDateStruct): boolean {
     return this.daysToHighlight.find(item =>
       JSON.stringify(item) === JSON.stringify(date)) !== undefined;
+  }
+
+  isToday(date: any) {
+    console.log(date);
+  }
+
+  selectDay(date: NgbDateStruct) {
+    this.selectedDay.emit(date);
   }
 }

@@ -12,51 +12,12 @@
 
             <div class="flex-column mr-2">
                 <app-select
-                        label="app.hours.detail.city"
-                        formControlName="city"
-                        fieldKey="id"
-                        fieldValue="city"
-                        [showValidation]="false"
-                        [items]="cities"
-                        [translateText]="true"
-                        [isLoading]="isLoadingData">
-                </app-select>
-            </div>
-
-            <div class="flex-column mr-2">
-                <app-select
                         label="app.hours.detail.project"
                         formControlName="project"
                         fieldKey="id"
-                        fieldValue="name"
+                        fieldValue="description"
                         [showValidation]="false"
                         [items]="projects"
-                        [translateText]="true"
-                        [isLoading]="isLoadingData">
-                </app-select>
-            </div>
-
-            <div class="flex-column mr-2">
-                <app-select
-                        label="app.hours.detail.cost_center"
-                        formControlName="cost_center"
-                        fieldKey="id"
-                        fieldValue="name"
-                        [showValidation]="false"
-                        [items]="costCenters"
-                        [translateText]="true"
-                        [isLoading]="isLoadingData">
-                </app-select>
-            </div>
-
-            <div class="flex-column mr-2">
-                <app-select
-                        label="app.users.detail.responsible"
-                        formControlName="responsible"
-                        fieldKey="id"
-                        fieldValue="full_name"
-                        [showValidation]="false"
-                        [items]="users"
                         [translateText]="true"
                         [isLoading]="isLoadingData">
                 </app-select>
@@ -72,12 +33,10 @@
             </div>
 
             <div class="flex-column mr-2">
-                <app-text-input
+                <app-boolean-input
                         label="app.hours.detail.active"
-                        formControlName="active"
-                        placeholder="app.hours.detail.active"
-                        [showValidation]="false">
-                </app-text-input>
+                        formControlName="active">
+                </app-boolean-input>
             </div>
         </div>
         <div class="row">

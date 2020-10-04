@@ -32,9 +32,9 @@
 
             <div class="flex-column mr-2">
                 <app-text-input
-                        label="app.users.detail.ldap_id"
-                        formControlName="ldap_id"
-                        placeholder="app.users.detail.ldap_id"
+                        label="app.users.detail.cost_center_sender"
+                        formControlName="cost_center_sender"
+                        placeholder="app.users.detail.cost_center_sender"
                         [showValidation]="false">
                 </app-text-input>
             </div>
@@ -53,12 +53,30 @@
             </div>
 
             <div class="flex-column mr-2">
-                <app-text-input
-                        label="app.users.detail.active"
-                        formControlName="active"
-                        placeholder="app.users.detail.active"
-                        [showValidation]="false">
-                </app-text-input>
+                <app-select
+                        label="app.users.detail.position"
+                        formControlName="position"
+                        fieldKey="id"
+                        fieldValue="name"
+                        [showValidation]="false"
+                        [items]="positions"
+                        [translateText]="true"
+                        [isLoading]="isLoadingData">
+                </app-select>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-datepicker
+                        label="app.generic.valid_from"
+                        formControlName="valid_from">
+                </app-datepicker>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-datepicker
+                        label="app.generic.valid_to"
+                        formControlName="valid_to">
+                </app-datepicker>
             </div>
         </div>
         <div class="row">

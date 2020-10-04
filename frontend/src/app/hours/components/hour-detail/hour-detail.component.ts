@@ -15,7 +15,7 @@ import { CostCenter } from '../../../_interfaces/entities/cost-center';
 import { City } from '../../../_interfaces/entities/city';
 import { AuthService } from '../../../_services/auth/auth.service';
 import { ROLES, ROLES_IDX } from '../../../_constants/roles';
-import { fromMilliseconds, toMilliseconds } from '../../../_utils/utils';
+import { booleanToNumber, fromMilliseconds, toMilliseconds } from '../../../_utils/utils';
 
 @Component({
   selector: 'app-hour-detail',
@@ -25,17 +25,11 @@ import { fromMilliseconds, toMilliseconds } from '../../../_utils/utils';
 export class HourDetailComponent implements OnInit, OnDestroy {
 
   hourSubscription: Subscription;
-  userSubscription: Subscription;
   projectSubscription: Subscription;
-  costCenterSubscription: Subscription;
-  citySubscription: Subscription;
 
   selectedHour: Hour;
   currentUser: AppUser;
-  users: AppUser[] = [];
   projects: Project[] = [];
-  costCenters: CostCenter[] = [];
-  cities: City[] = [];
   isLoadingData = false;
   isNewHour = false;
 
@@ -45,10 +39,7 @@ export class HourDetailComponent implements OnInit, OnDestroy {
 
   form: FormGroup = this.formBuilder.group({
     date: ['', Validators.required],
-    city: ['', Validators.required],
     project: ['', Validators.required],
-    cost_center: ['', Validators.required],
-    responsible: ['', Validators.required],
     description: ['', Validators.required],
     time: ['', Validators.required],
     active: ['', Validators.required]
@@ -56,10 +47,7 @@ export class HourDetailComponent implements OnInit, OnDestroy {
 
   constructor(private route: ActivatedRoute,
               private hour: HourService,
-              private user: UserService,
               private project: ProjectService,
-              private costCenter: CostCenterService,
-              private city: CityService,
               private auth: AuthService,
               private formBuilder: FormBuilder) { }
 
@@ -68,24 +56,9 @@ export class HourDetailComponent implements OnInit, OnDestroy {
 
       this.currentUser = this.auth.getCurrentUser();
 
-      // Users.
-      this.userSubscription = this.user.getAll(true).subscribe((data) => {
-        this.users = data.filter(item => item.role === ROLES[ROLES_IDX.RESPONSIBLE].role_id);
-      });
-
       // Projects.
       this.projectSubscription = this.project.getAll(true).subscribe((data) => {
         this.projects = data;
-      });
-
-      // Cost Centers.
-      this.costCenterSubscription = this.costCenter.getAll(true).subscribe((data) => {
-        this.costCenters = data;
-      });
-
-      // Cities.
-      this.citySubscription = this.city.getAll(true).subscribe((data) => {
-        this.cities = data;
       });
 
       const id = paramMap.get('id');
@@ -96,10 +69,7 @@ export class HourDetailComponent implements OnInit, OnDestroy {
           this.selectedHour = data;
           this.form.setValue({
             date: moment(this.selectedHour.datetime).format('YYYY-MM-DD'),
-            city: this.selectedHour.city_id,
             project: this.selectedHour.project_id,
-            cost_center: this.selectedHour.cost_center_id,
-            responsible: this.selectedHour.responsible_id,
             description: this.selectedHour.description,
             time: fromMilliseconds('h', this.selectedHour.time),
             active: this.selectedHour.active
@@ -111,10 +81,7 @@ export class HourDetailComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.hourSubscription?.unsubscribe();
-    this.userSubscription.unsubscribe();
-    this.projectSubscription.unsubscribe();
-    this.costCenterSubscription.unsubscribe();
-    this.citySubscription.unsubscribe();
+    this.projectSubscription?.unsubscribe();
   }
 
   submit() {
@@ -122,15 +89,14 @@ export class HourDetailComponent implements OnInit, OnDestroy {
 
     const payload: Hour = {
       datetime: moment(this.form.value.date, 'YYYY-MM-DD').utc().valueOf(),
-      city_id: this.form.value.city,
       project_id: this.form.value.project,
-      cost_center_id: this.form.value.cost_center,
-      responsible_id: this.form.value.responsible,
       description: this.form.value.description,
       time: toMilliseconds('h', this.form.value.time),
       active: this.form.value.active,
       id: this.isNewHour ? undefined : this.selectedHour.id,
-      user_id: this.currentUser.id
+      user_id: this.currentUser.id,
+      valid_from: 0,
+      valid_to: 0
     };
 
     this.hour.save(payload, this.isNewHour).toPromise().then((data) => {

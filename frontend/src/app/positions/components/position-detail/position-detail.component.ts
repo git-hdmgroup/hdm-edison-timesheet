@@ -4,6 +4,8 @@ import { Position } from '../../../_interfaces/entities/position';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { PositionService } from '../../../_services/position/position.service';
+import { booleanToNumber } from '../../../_utils/utils';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-position-detail',
@@ -25,7 +27,8 @@ export class PositionDetailComponent implements OnInit, OnDestroy {
   form: FormGroup = this.formBuilder.group({
     name: ['', Validators.required],
     cost: ['', Validators.required],
-    active: [null, Validators.required]
+    valid_from: ['', Validators.required],
+    valid_to: ['', Validators.required]
   });
 
   constructor(private route: ActivatedRoute,
@@ -45,7 +48,8 @@ export class PositionDetailComponent implements OnInit, OnDestroy {
           this.form.setValue({
             name: this.selectedPosition.name,
             cost: this.selectedPosition.cost,
-            active: this.selectedPosition.active
+            valid_from: moment(this.selectedPosition.valid_from).format('YYYY-MM-DD'),
+            valid_to: moment(this.selectedPosition.valid_to).format('YYYY-MM-DD')
           });
         });
       }
@@ -62,12 +66,13 @@ export class PositionDetailComponent implements OnInit, OnDestroy {
     const payload: Position = {
       name: this.form.value.name,
       cost: this.form.value.cost,
-      active: this.form.value.active,
-      id: this.isNewPosition ? undefined : this.selectedPosition.id
+      active: booleanToNumber(this.form.value.active),
+      id: this.isNewPosition ? undefined : this.selectedPosition.id,
+      valid_from: moment(this.form.value.valid_from, 'YYYY-MM-DD').utc().valueOf(),
+      valid_to: moment(this.form.value.valid_to, 'YYYY-MM-DD').utc().valueOf()
     };
 
     this.position.save(payload, this.isNewPosition).toPromise().then((data) => {
-      console.log(data);
       this.isLoadingData = false;
       this.alertType = 'success';
       this.alertMessage = this.isNewPosition ? 'app.positions.detail.insert' : 'app.positions.detail.update';

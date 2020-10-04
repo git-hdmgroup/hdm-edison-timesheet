@@ -25,10 +25,8 @@ export class CityDetailComponent implements OnInit, OnDestroy {
 
   form: FormGroup = this.formBuilder.group({
     city: ['', Validators.required],
-    province_state: ['', Validators.required],
-    zip_code: ['', Validators.required],
-    nation: ['', Validators.required],
-    active: [null, Validators.required]
+    id_geo_area: ['', Validators.required],
+    scope: ['', Validators.required]
   });
 
   constructor(private route: ActivatedRoute,
@@ -47,10 +45,8 @@ export class CityDetailComponent implements OnInit, OnDestroy {
 
           this.form.setValue({
             city: this.selectedCity.city,
-            province_state: this.selectedCity.province_state,
-            zip_code: this.selectedCity.zip_code,
-            nation: this.selectedCity.nation,
-            active: this.selectedCity.active
+            id_geo_area: this.selectedCity.id_geo_area,
+            scope: this.selectedCity.scope,
           });
         });
       }
@@ -65,12 +61,12 @@ export class CityDetailComponent implements OnInit, OnDestroy {
     this.isLoadingData = true;
 
     const payload: City = {
-      nation: this.form.value.nation,
-      zip_code: this.form.value.zip_code,
-      province_state: this.form.value.province_state,
       city: this.form.value.city,
-      active: booleanToNumber(this.form.value.active),
-      id: this.isNewCity ? undefined : this.selectedCity.id
+      id_geo_area: this.form.value.id_geo_area,
+      scope: this.form.value.scope,
+      id: this.isNewCity ? undefined : this.selectedCity.id,
+      valid_from: 0,
+      valid_to: 0
     };
 
     this.city.save(payload, this.isNewCity).toPromise().then((data) => {

@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
 import { Project } from '../../_interfaces/entities/project';
+import { HourView } from '../../_interfaces/entities/hour-view';
+import { ProjectView } from '../../_interfaces/entities/project-view';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +21,7 @@ export class ProjectService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} project {
           projects(where: {id: {_eq: ${id}}}) {
-            id name start_date end_date duration active updated_at created_at
+            id city_id cost_center_id cost_asset typology description active valid_from valid_to created_at updated_at
           }
         }
       `
@@ -33,7 +35,7 @@ export class ProjectService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} project {
           projects {
-            id name start_date end_date duration active updated_at created_at
+            id city_id cost_center_id cost_asset typology description active valid_from valid_to created_at updated_at
           }
         }
       `
@@ -41,20 +43,36 @@ export class ProjectService {
       .pipe(map(result => result.data.projects));
   }
 
+  getAllView(isSubscription = false): Observable<ProjectView[]> {
+    return this.apollo
+      .subscribe<any>({
+        query: gql`
+        ${isSubscription ? 'subscription' : 'query'} project {
+          projects_view {
+            id active valid_from valid_to created_at updated_at
+            cost_center_name project_name city city_id cost_center_id cost_asset typology
+          }
+        }
+      `
+      })
+      .pipe(map(result => result.data.projects_view));
+  }
+
   save(project: Project, insert: boolean) {
 
     const updateQuery = gql`
       mutation project {
         update_projects(where: {id: {_eq: ${project.id}}}, _set: {
-          name: "${project.name}",
-          start_date: ${project.start_date},
-          end_date: ${project.end_date},
-          duration: ${project.end_date - project.start_date},
+          city_id: ${project.city_id},
+          cost_center_id: ${project.cost_center_id},
+          cost_asset: "${project.cost_asset}",
+          typology: "${project.typology}",
+          description: "${project.description}",
           active: ${project.active},
           updated_at: ${Date.now()}
         }) {
           returning {
-            id name start_date end_date duration active updated_at created_at
+            id city_id cost_center_id cost_asset typology description active valid_from valid_to created_at updated_at
           }
         }
       }`;
@@ -62,16 +80,19 @@ export class ProjectService {
     const insertQuery = gql`
       mutation city {
         insert_projects(objects: {
-          name: "${project.name}",
-          start_date: ${project.start_date},
-          end_date: ${project.end_date},
-          duration: ${project.end_date - project.start_date},
+          city_id: ${project.city_id},
+          cost_center_id: ${project.cost_center_id},
+          cost_asset: "${project.cost_asset}",
+          typology: "${project.typology}",
+          description: "${project.description}",
           active: ${project.active},
           updated_at: ${Date.now()},
-          created_at: ${Date.now()}
+          created_at: ${Date.now()},
+          valid_from: ${project.valid_from},
+          valid_to: ${project.valid_to}
         }) {
           returning {
-            id name start_date end_date duration active updated_at created_at
+            id city_id cost_center_id cost_asset typology description active valid_from valid_to created_at updated_at
           }
         }
       }`;

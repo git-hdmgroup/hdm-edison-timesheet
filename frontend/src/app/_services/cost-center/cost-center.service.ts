@@ -18,7 +18,7 @@ export class CostCenterService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} costCenter {
           cost_centers(where: {id: {_eq: ${id}}}) {
-            id name type active updated_at created_at
+            id name description garrison id_geo_area valid_from valid_to created_at updated_at 
           }
         }
       `
@@ -32,7 +32,7 @@ export class CostCenterService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} costCenter {
           cost_centers {
-            id name type active updated_at created_at
+            id name description garrison id_geo_area valid_from valid_to created_at updated_at 
           }
         }
       `
@@ -45,12 +45,15 @@ export class CostCenterService {
       mutation costCenter {
         update_cost_centers(where: {id: {_eq: ${costCenter.id}}}, _set: {
           name: "${costCenter.name}",
-          type: ${costCenter.type},
-          active: ${costCenter.active},
+          description: "${costCenter.description}",
+          garrison: "${costCenter.garrison}",
+          id_geo_area: "${costCenter.id_geo_area}",
+          valid_from: ${costCenter.valid_from},
+          valid_to: ${costCenter.valid_to},
           updated_at: ${Date.now()}
         }) {
           returning {
-            id name type active updated_at created_at
+            id name description garrison id_geo_area valid_from valid_to created_at updated_at 
           }
         }
       }`;
@@ -59,13 +62,16 @@ export class CostCenterService {
       mutation costCenter {
         insert_cost_centers(objects: {
           name: "${costCenter.name}",
-          type: ${costCenter.type},
-          active: ${costCenter.active},
+          description: "${costCenter.description}",
+          garrison: "${costCenter.garrison}",
+          id_geo_area: "${costCenter.id_geo_area}",
+          valid_from: ${costCenter.valid_from},
+          valid_to: ${costCenter.valid_to},
           created_at: ${Date.now()},
           updated_at: ${Date.now()}
         }) {
           returning {
-            id name type active updated_at created_at
+            id name description garrison id_geo_area valid_from valid_to created_at updated_at 
           }
         }
       }`;

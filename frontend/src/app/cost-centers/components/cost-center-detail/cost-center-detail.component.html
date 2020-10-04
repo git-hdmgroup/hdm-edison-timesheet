@@ -13,24 +13,29 @@
       </div>
 
       <div class="flex-column mr-2">
-        <app-select
-          label="app.cost-centers.type"
-          formControlName="type"
-          fieldKey="type_id"
-          fieldValue="type_name"
-          [showValidation]="false"
-          [items]="costCenterTypes"
-          [translateText]="true"
-          [isLoading]="isLoadingData">
-        </app-select>
+        <app-text-input
+          label="app.cost-centers.description"
+          formControlName="description"
+          placeholder="app.cost-centers.description"
+          [showValidation]="false">
+        </app-text-input>
       </div>
 
       <div class="flex-column mr-2">
         <app-text-input
-          label="app.cost-centers.active"
-          formControlName="active"
-          placeholder="app.cost-centers.active"
-          [showValidation]="false">
+                label="app.cost-centers.id_geo_area"
+                formControlName="id_geo_area"
+                placeholder="app.cost-centers.id_geo_area"
+                [showValidation]="false">
+        </app-text-input>
+      </div>
+
+      <div class="flex-column mr-2">
+        <app-text-input
+                label="app.cost-centers.garrison"
+                formControlName="garrison"
+                placeholder="app.cost-centers.garrison"
+                [showValidation]="false">
         </app-text-input>
       </div>
     </div>

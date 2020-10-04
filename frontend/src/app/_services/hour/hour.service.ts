@@ -20,7 +20,7 @@ export class HourService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} hour {
           hours(where: {id: {_eq: ${id}}}) {
-            id city_id project_id cost_center_id responsible_id datetime description time active updated_at created_at
+            id project_id datetime description time active updated_at created_at
           }
         }
       `
@@ -34,7 +34,7 @@ export class HourService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} hour {
           hours {
-            id city_id project_id cost_center_id responsible_id datetime description time active updated_at created_at
+            id project_id datetime description time active updated_at created_at
           }
         }
       `
@@ -49,7 +49,7 @@ export class HourService {
         ${isSubscription ? 'subscription' : 'query'} hour {
           hours_view(where: {user_id: {_eq: ${userId}}}) {
             id city_id project_id cost_center_id datetime description time active
-            updated_at created_at responsible_id user_id city cost_center_name full_name project_name
+            updated_at created_at user_id city cost_center_name full_name project_name
           }
         }
       `
@@ -62,16 +62,15 @@ export class HourService {
     const updateQuery = gql`
       mutation hour {
         update_hours(where: {id: {_eq: ${hour.id}}}, _set: {
+          datetime: ${hour.datetime},
+          time: ${hour.time},
           project_id: ${hour.project_id},
-          cost_center_id: ${hour.cost_center_id},
-          city_id: ${hour.city_id},
-          responsible_id: ${hour.responsible_id},
           description: "${hour.description}",
           active: ${hour.active},
           updated_at: ${Date.now()}
         }) {
           returning {
-            id city_id project_id cost_center_id responsible_id datetime description time active updated_at created_at
+            id project_id datetime description time active updated_at created_at
           }
         }
       }`;
@@ -81,17 +80,15 @@ export class HourService {
         insert_hours(objects: {
           user_id: ${hour.user_id},
           datetime: ${hour.datetime},
+          time: ${hour.time},
           project_id: ${hour.project_id},
-          cost_center_id: ${hour.cost_center_id},
-          city_id: ${hour.city_id},
-          responsible_id: ${hour.responsible_id},
           description: "${hour.description}",
           active: ${hour.active},
           updated_at: ${Date.now()},
           created_at: ${Date.now()}
         }) {
           returning {
-            id city_id project_id cost_center_id responsible_id datetime description time active updated_at created_at
+            id project_id datetime description time active updated_at created_at
           }
         }
       }`;

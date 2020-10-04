@@ -1,50 +1,20 @@
 <h2>{{ 'app.hours' | translate }}</h2>
 <div>
-    <app-calendar [daysToHighlight]="highlight"></app-calendar>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th scope="col">{{ 'app.hours.date' | translate }}</th>
-            <th scope="col">{{ 'app.hours.project_name' | translate }}</th>
-            <th scope="col">{{ 'app.hours.description' | translate }}</th>
-            <th scope="col">{{ 'app.hours.time' | translate }}</th>
-            <th scope="col">{{ 'app.hours.city' | translate }}</th>
-            <th scope="col" class="text-right">{{ 'app.hours.action' | translate }}</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let hourView of hoursView">
-            <td>{{ hourView.datetime | momentify: 'DD/MM/YYYY' }}</td>
-            <td>{{ hourView.project_name }}</td>
-            <td>{{ hourView.description }}</td>
-            <td>{{ hourView.time / 60 / 60 / 1000 }}</td>
-            <td>{{ hourView.city | translate }}</td>
-            <td class="text-right text-nowrap">
-                <button
-                        type="button"
-                        class="btn btn-sm btn-primary margin-right-sm"
-                        (click)="openDetail(hourView)">
-                    {{ 'app.button.edit' | translate }}
-                </button>
-                <button
-                        type="button"
-                        class="btn btn-sm btn-danger"
-                        (click)="remove(hourView)">
-                    {{ 'app.button.delete' | translate }}
-                </button>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+    <form [formGroup]="form" novalidate (ngSubmit)="test()">
+        <app-week-calendar
+                formControlName="weekDayCalendar"
+                [highlightedDays]="highlight"
+                [showWeekNumber]="true">
+        </app-week-calendar>
+        <button ngbButton type="submit">Search</button>
+    </form>
 
-    <div class="text-right text-nowrap">
-        <button
-                type="button"
-                class="btn btn-sm btn-info"
-                (click)="add()">
-            {{ 'app.button.add' | translate }}
-        </button>
-    </div>
+    <app-table *ngIf="hoursView"
+            [data]="hoursView"
+            [columns]="columns"
+            (add)="add()"
+            (edit)="openDetail($event)"
+            (remove)="remove($event)"></app-table>
 
     <ng-container *ngIf="alertVisible">
         <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>

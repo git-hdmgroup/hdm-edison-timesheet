@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import gql from 'graphql-tag';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { AppUser } from 'src/app/_interfaces/entities/app-user';
 import { Observable } from 'rxjs';
-import { CostCenter } from '../../_interfaces/entities/cost-center';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +19,7 @@ export class UserService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} user {
           users(where: {id: {_eq: "${id}"}}) {
-            id email ldap_id name role surname active full_name updated_at created_at
+            id id_position email cost_center_sender valid_from valid_to created_at updated_at name surname role full_name
           }
         }
       `
@@ -34,7 +33,7 @@ export class UserService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} user {
           users(where: {email: {_eq: "${user}"}}) {
-            id email ldap_id name role surname active full_name updated_at created_at
+            id id_position email cost_center_sender valid_from valid_to created_at updated_at name surname role full_name
           }
         }
       `
@@ -48,7 +47,7 @@ export class UserService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} user {
           users {
-            id email ldap_id name role surname active full_name updated_at created_at
+            id id_position email cost_center_sender valid_from valid_to created_at updated_at name surname role full_name
           }
         }
       `
@@ -61,8 +60,8 @@ export class UserService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} user {
-          users(where: {role: {_eq: ${role}}, active: {_eq: 1}}) {
-            id email ldap_id name role surname active full_name updated_at created_at
+          users(where: {role: {_eq: ${role}}}) {
+            id id_position email cost_center_sender valid_from valid_to created_at updated_at name surname role full_name
           }
         }
       `
@@ -74,17 +73,19 @@ export class UserService {
     const updateQuery = gql`
       mutation user {
         update_users(where: {id: {_eq: ${user.id}}}, _set: {
-          active: ${user.active},
           email: "${user.email}",
           name: "${user.name}",
           surname: "${user.surname}",
           role: ${user.role},
           full_name: "${user.name} ${user.surname}",
-          ldap_id: "${user.ldap_id}",
+          cost_center_sender: "${user.cost_center_sender}",
+          id_position: ${user.id_position},
+          valid_from: ${user.valid_from},
+          valid_to: ${user.valid_to},
           updated_at: ${Date.now()}
         }) {
           returning {
-            email id ldap_id name role surname active full_name updated_at created_at
+            id id_position email cost_center_sender valid_from valid_to created_at updated_at name surname role full_name
           }
         }
       }`;
@@ -92,18 +93,20 @@ export class UserService {
     const insertQuery = gql`
       mutation user {
         insert_users(objects: {
-          active: ${user.active},
           email: "${user.email}",
           name: "${user.name}",
           surname: "${user.surname}",
           role: ${user.role},
           full_name: "${user.name} ${user.surname}",
-          ldap_id: "${user.ldap_id}",
+          cost_center_sender: "${user.cost_center_sender}",
+          id_position: ${user.id_position},
+          valid_from: ${user.valid_from},
+          valid_to: ${user.valid_to},
           updated_at: ${Date.now()},
           created_at: ${Date.now()}
         }) {
           returning {
-            email id ldap_id name role surname active full_name updated_at created_at
+            id id_position email cost_center_sender valid_from valid_to created_at updated_at name surname role full_name
           }
         }
       }`;

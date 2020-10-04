@@ -36,7 +36,8 @@ export class ResponsibleDetailComponent implements OnInit, OnDestroy {
     });
 
     this.userSubscription = this.user.getAll( true).subscribe((data) => {
-      this.responsibles = data.filter(item => item.role !== ROLES[ROLES_IDX.RESPONSIBLE].role_id && item.active === 1);
+      this.responsibles = data.filter(item => item.role !== ROLES[ROLES_IDX.RESPONSIBLE].role_id);
+      console.log(this.responsibles);
       this.isLoadingData = false;
     });
   }

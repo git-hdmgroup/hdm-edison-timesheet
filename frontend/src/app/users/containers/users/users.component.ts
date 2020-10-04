@@ -3,6 +3,10 @@ import { UserService } from '../../../_services/user/user.service';
 import { AppUser } from '../../../_interfaces/entities/app-user';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { BupTableColumns } from '../../../shared/components/table/table.component';
+import { RolePipe } from '../../../shared/pipes/role/role.pipe';
+import { IsActivePipe } from '../../../shared/pipes/is-active/is-active.pipe';
+import { commonColumns } from '../../../_constants/table-commons';
 
 @Component({
   selector: 'app-users',
@@ -18,8 +22,24 @@ export class UsersComponent implements OnInit, OnDestroy {
   alertType: string;
   alertMessage: string;
 
+  columns: BupTableColumns[] = [
+    {name: 'surname', label: 'app.users.surname'},
+    {name: 'name', label: 'app.users.name'},
+    {name: 'email', label: 'app.users.email'},
+    {
+      name: 'role',
+      label: 'app.users.role',
+      transform: (item): string => {
+        const pipe = new RolePipe();
+        return pipe.transform(item.role);
+      }
+    },
+    ...commonColumns
+  ];
+
   constructor(private user: UserService,
-              private router: Router) { }
+              private router: Router) {
+  }
 
   ngOnInit(): void {
     this.userSubscription = this.user.getAll(true).subscribe((data) => {

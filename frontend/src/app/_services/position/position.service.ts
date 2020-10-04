@@ -18,7 +18,7 @@ export class PositionService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} position {
           positions(where: {id: {_eq: ${id}}}) {
-            id name cost active updated_at created_at
+            id name cost valid_from valid_to updated_at created_at
           }
         }
       `
@@ -32,7 +32,7 @@ export class PositionService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} position {
           positions {
-            id name cost active updated_at created_at
+            id name cost valid_from valid_to updated_at created_at
           }
         }
       `
@@ -46,11 +46,12 @@ export class PositionService {
         update_positions(where: {id: {_eq: ${position.id}}}, _set: {
           name: "${position.name}",
           cost: ${position.cost},
-          active: ${position.active},
+          valid_from: ${position.valid_from},
+          valid_to: ${position.valid_to},
           updated_at: ${Date.now()}
         }) {
           returning {
-            id name cost active updated_at created_at
+            id name cost valid_from valid_to updated_at created_at
           }
         }
       }`;
@@ -60,12 +61,13 @@ export class PositionService {
         insert_positions(objects: {
           name: "${position.name}",
           cost: ${position.cost},
-          active: ${position.active},
+          valid_from: ${position.valid_from},
+          valid_to: ${position.valid_to},
           created_at: ${Date.now()},
           updated_at: ${Date.now()}
         }) {
           returning {
-            id name cost active updated_at created_at
+            id name cost valid_from valid_to updated_at created_at
           }
         }
       }`;

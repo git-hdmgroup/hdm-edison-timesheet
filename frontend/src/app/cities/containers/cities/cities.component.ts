@@ -3,6 +3,8 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { City } from '../../../_interfaces/entities/city';
 import { CityService } from '../../../_services/city/city.service';
+import { BupTableColumns } from '../../../shared/components/table/table.component';
+import { IsActivePipe } from '../../../shared/pipes/is-active/is-active.pipe';
 
 @Component({
   selector: 'app-cities',
@@ -17,6 +19,12 @@ export class CitiesComponent implements OnInit, OnDestroy {
   alertVisible = false;
   alertType: string;
   alertMessage: string;
+
+  columns: BupTableColumns[] = [
+    { name: 'city', label: 'app.cities.city' },
+    { name: 'id_geo_area', label: 'app.cities.id_geo_area' },
+    { name: 'scope', label: 'app.cities.scope' }
+  ];
 
   constructor(private city: CityService,
               private router: Router) { }

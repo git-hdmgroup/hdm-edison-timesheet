@@ -4,6 +4,7 @@ import { UserService } from '../../../_services/user/user.service';
 import { AuthService } from '../../../_services/auth/auth.service';
 import { AppUser } from '../../../_interfaces/entities/app-user';
 import { Subscription } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-user-profile',
@@ -56,10 +57,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       name: this.form.value.name,
       email: this.form.value.email,
       id: this.profile.id,
-      ldap_id: this.profile.ldap_id,
       role: this.profile.role,
-      active: this.profile.active,
       full_name: this.profile.full_name,
+      id_position: this.profile.id_position,
+      cost_center_sender: this.profile.cost_center_sender,
+      valid_from: this.profile.valid_from,
+      valid_to: this.profile.valid_to
     };
 
     this.user.save(payload, false).toPromise().then((data) => {

@@ -1,0 +1,50 @@
+<div class="row mb-2">
+    <div class="col h2 text-left">{{ title | translate }}</div>
+    <div class="col text-right">
+        <button *ngIf="addButtonVisible"
+                type="button"
+                class="btn btn-sm btn-primary margin-right-sm"
+                [disabled]="addButtonDisabled"
+                (click)="handleAdd()">
+            <fa-icon [icon]="iconPlusCircle" [fixedWidth]="true"></fa-icon>
+        </button>
+    </div>
+</div>
+<div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th *ngFor="let column of columns" scope="col">{{ column.label | translate }}</th>
+            <th scope="col" class="text-right">{{ 'app.cities.action' | translate }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of data">
+            <td *ngFor="let column of columns">
+                <span *ngIf="column.transform; else transformationLess">
+                    {{ column.prefix | translate }}
+                    {{ column.transform(item) | translate }}
+                    {{ column.suffix | translate }}
+                </span>
+                <ng-template #transformationLess>{{ item[column.name] }}</ng-template>
+            </td>
+            <td class="text-right text-nowrap">
+                <button *ngIf="editButtonVisible"
+                        type="button"
+                        class="btn btn-sm btn-primary margin-right-sm"
+                        [disabled]="editButtonDisabled"
+                        (click)="handleEdit(item)">
+                    <fa-icon [icon]="iconPencil" [fixedWidth]="true"></fa-icon>
+                </button>
+                <button *ngIf="removeButtonVisible"
+                        type="button"
+                        class="btn btn-sm btn-danger"
+                        [disabled]="removeButtonDisabled"
+                        (click)="handleRemove(item)">
+                    <fa-icon [icon]="iconTrash" [fixedWidth]="true"></fa-icon>
+                </button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

@@ -22,12 +22,17 @@
             </div>
 
             <div class="flex-column mr-2">
-                <app-text-input
-                        label="app.positions.detail.active"
-                        formControlName="active"
-                        placeholder="app.positions.detail.active"
-                        [showValidation]="false">
-                </app-text-input>
+                <app-datepicker
+                        label="app.generic.valid_from"
+                        formControlName="valid_from">
+                </app-datepicker>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-datepicker
+                        label="app.generic.valid_to"
+                        formControlName="valid_to">
+                </app-datepicker>
             </div>
         </div>
         <div class="row">

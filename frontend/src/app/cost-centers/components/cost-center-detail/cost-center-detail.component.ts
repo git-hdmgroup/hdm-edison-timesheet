@@ -26,8 +26,9 @@ export class CostCenterDetailComponent implements OnInit, OnDestroy {
 
   form: FormGroup = this.formBuilder.group({
     name: ['', Validators.required],
-    type: ['', Validators.required],
-    active: [null, Validators.required]
+    description: ['', Validators.required],
+    id_geo_area: ['', Validators.required],
+    garrison: ['', Validators.required]
   });
 
   constructor(private route: ActivatedRoute,
@@ -46,8 +47,9 @@ export class CostCenterDetailComponent implements OnInit, OnDestroy {
 
           this.form.setValue({
             name: this.selectedCostCenter.name,
-            type: this.selectedCostCenter.type,
-            active: this.selectedCostCenter.active
+            description: this.selectedCostCenter.description,
+            id_geo_area: this.selectedCostCenter.id_geo_area,
+            garrison: this.selectedCostCenter.garrison
           });
         });
       }
@@ -63,9 +65,12 @@ export class CostCenterDetailComponent implements OnInit, OnDestroy {
 
     const payload: CostCenter = {
       name: this.form.value.name,
-      type: this.form.value.type,
-      active: this.form.value.active,
-      id: this.isNewCostCenter ? undefined : this.selectedCostCenter.id
+      description: this.form.value.type,
+      id_geo_area: this.form.value.id_geo_area,
+      garrison: this.form.value.garrison,
+      id: this.isNewCostCenter ? undefined : this.selectedCostCenter.id,
+      valid_from: 0,
+      valid_to: 0
     };
 
     console.log(payload);

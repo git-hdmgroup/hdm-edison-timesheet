@@ -1,0 +1,21 @@
+<div class="m-2" #weekDayCalendarElement
+     [class.bup-week-calendar__disabled]="isDisabled">
+
+    <div class="m-2">
+        <fa-icon class="mr-2 bup_week-calendar__navigator" [icon]="arrowLeft" [fixedWidth]="true" (click)="calculateWeek(-1)"></fa-icon>
+        <fa-icon class="mr-2 bup_week-calendar__navigator" [icon]="home" [fixedWidth]="true" (click)="resetCalendar()"></fa-icon>
+        <fa-icon class="mr-2 bup_week-calendar__navigator" [icon]="arrowRight" [fixedWidth]="true" (click)="calculateWeek(1)"></fa-icon>
+        <div class="bup-week-calendar__week-header align-top">
+            <div *ngIf="showWeekNumber" id="week-number" class="d-inline-block">({{ from.isoWeek() }})</div>
+            {{ from.format(fromToWeekFormat) }} - {{ to.format(fromToWeekFormat) }}
+        </div>
+    </div>
+    <div [id]="'week-calendar-' + day.dayName" class="d-inline-block bup-week-calendar__custom-day" *ngFor="let day of week"
+         [class.bup-week-calendar__highlighted]="day.highlighted"
+         [class.bup-week-calendar__today]="day.today"
+         [class.bup-week-calendar__selected]="day.selected"
+         (click)="select(day)">
+        <div>{{ day.day }}</div>
+        <div class="bup-week-calendar__day-letter">{{ day.dayName }}</div>
+    </div>
+</div>
