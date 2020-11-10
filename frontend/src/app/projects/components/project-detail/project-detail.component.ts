@@ -39,8 +39,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
     cost_center: [null, Validators.required],
     cost_asset: ['', Validators.required],
     typology: ['', Validators.required],
-    description: ['', Validators.required],
-    active: [null, Validators.required]
+    description: ['', Validators.required]
   });
 
   constructor(private route: ActivatedRoute,
@@ -98,7 +97,7 @@ export class ProjectDetailComponent implements OnInit, OnDestroy {
       typology: this.form.value.typology,
       description: this.form.value.description,
       id: this.isNewProject ? undefined : this.selectedProject.id,
-      active: this.form.value.active,
+      active: 1,
       valid_from: 0,
       valid_to: 0
     };

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NAV_ITEMS } from 'src/app/_constants/nav-items';
+import { AuthService } from '../../../_services/auth/auth.service';
 
 @Component({
   selector: 'app-side-nav',
@@ -9,10 +10,12 @@ import { NAV_ITEMS } from 'src/app/_constants/nav-items';
 export class SideNavComponent implements OnInit {
 
   // TODO: filter by admin.
-  navItems = NAV_ITEMS;
+  navItems = [];
 
-  constructor() { }
+  constructor(private auth: AuthService) { }
 
   ngOnInit(): void {
+    const currentUser = this.auth.getCurrentUser();
+    this.navItems = NAV_ITEMS; // .filter(item => currentUser.role >= item.role);
   }
 }

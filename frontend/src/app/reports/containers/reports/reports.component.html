@@ -1,1 +1,75 @@
-<p>reports works!</p>
+<h2>{{ 'app.reports.full' | translate }}</h2>
+<div class="container">
+    <form [formGroup]="form" (change)="search()" novalidate>
+        <div class="row">
+            <app-date-filter (dateFilter)="dateFilter($event)"></app-date-filter>
+        </div>
+        <div class="row">
+            <div class="flex-column mr-2">
+                <app-select
+                        label="app.reports.full.users"
+                        formControlName="user_id"
+                        fieldKey="id"
+                        fieldValue="full_name"
+                        [showValidation]="false"
+                        [items]="users"
+                        [translateText]="true"
+                        [isLoading]="isLoadingData">
+                </app-select>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-select
+                        label="app.reports.full.city"
+                        formControlName="city_id"
+                        fieldKey="id"
+                        fieldValue="city"
+                        [showValidation]="false"
+                        [items]="cities"
+                        [translateText]="true"
+                        [isLoading]="isLoadingData">
+                </app-select>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-select
+                        label="app.reports.full.cost_center"
+                        formControlName="cost_center_id"
+                        fieldKey="id"
+                        fieldValue="name"
+                        [showValidation]="false"
+                        [items]="costCenters"
+                        [translateText]="true"
+                        [isLoading]="isLoadingData">
+                </app-select>
+            </div>
+
+            <div class="flex-column mr-2">
+                <app-select
+                        label="app.reports.full.project"
+                        formControlName="project_id"
+                        fieldKey="id"
+                        fieldValue="description"
+                        [showValidation]="false"
+                        [items]="projects"
+                        [translateText]="true"
+                        [isLoading]="isLoadingData">
+                </app-select>
+            </div>
+        </div>
+    </form>
+</div>
+
+<app-table
+        [data]="reportFullView"
+        [columns]="columns"
+        [filterVisible]="false"
+        [addButtonVisible]="false"
+        [editButtonVisible]="false"
+        [removeButtonVisible]="false"
+        [exportButtonVisible]="true"></app-table>
+
+<ng-container *ngIf="alertVisible">
+    <app-alert dismissible="true" [type]="alertType" [message]="alertMessage"></app-alert>
+</ng-container>
+

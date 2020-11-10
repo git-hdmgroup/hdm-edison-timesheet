@@ -1,4 +1,15 @@
-import { Component, ElementRef, forwardRef, Input, OnInit, Optional, Provider, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  forwardRef,
+  Input,
+  OnInit,
+  Optional,
+  Provider,
+  ViewChild,
+  Output,
+  EventEmitter, OnChanges, SimpleChanges
+} from '@angular/core';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { Moment } from 'moment';
@@ -6,8 +17,16 @@ import { faArrowLeft, faArrowRight, faHome } from '@fortawesome/free-solid-svg-i
 import { ControlContainer, ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 const WEEK_LENGTH = 7;
+const WORKING_HOURS_DAY = 28800000;
 
-interface WeekDayCalendar {
+export interface HighlightedDays {
+  year: number;
+  month: number;
+  day: number;
+  time: number;
+}
+
+export interface WeekDayCalendar {
   day: number;
   year: number;
   month;
@@ -15,6 +34,8 @@ interface WeekDayCalendar {
   highlighted: boolean;
   today: boolean;
   selected: boolean;
+  completed: boolean;
+  time: number;
 }
 
 const VALUE_ACCESSOR: Provider = {
@@ -29,7 +50,7 @@ const VALUE_ACCESSOR: Provider = {
   styleUrls: ['./week-calendar.component.sass'],
   providers: [VALUE_ACCESSOR]
 })
-export class WeekCalendarComponent implements ControlValueAccessor {
+export class WeekCalendarComponent implements ControlValueAccessor, OnChanges {
 
   @ViewChild('weekDayCalendarElement')
   weekDayCalendarElement: ElementRef<Element>;
@@ -38,10 +59,13 @@ export class WeekCalendarComponent implements ControlValueAccessor {
   formControlName: string;
 
   @Input()
-  highlightedDays: NgbDateStruct[] = [];
+  highlightedDays: HighlightedDays[] = [];
 
   @Input()
   showWeekNumber: true;
+
+  @Output()
+  selectedDay = new EventEmitter<any>();
 
   isDisabled: boolean;
 
@@ -79,6 +103,7 @@ export class WeekCalendarComponent implements ControlValueAccessor {
   }
 
   writeValue(obj: string): void {
+    console.log(obj);
     this.value = obj;
     if (!moment(obj).isValid()) {
       this.value = moment().format(this.dateExchangeFormat);
@@ -119,11 +144,12 @@ export class WeekCalendarComponent implements ControlValueAccessor {
         dayName: this.from.format('ddd'),
         highlighted: this.isHighlighted(this.from),
         today: this.isToday(this.from),
-        selected: false
+        selected: false,
+        completed: this.isComplete(this.from),
+        time: Number((this.calculateTime(this.from) / 60 / 60 / 1000).toFixed(1))
       });
       this.from.add(1, 'd');
     }
-
     this.from.subtract(WEEK_LENGTH, 'd');
   }
 
@@ -131,6 +157,7 @@ export class WeekCalendarComponent implements ControlValueAccessor {
     this.value = moment().format(this.dateExchangeFormat);
     this.weekShift = 0;
     this.calculateWeek();
+    this.selectedDay.emit(0);
   }
 
   select(day: WeekDayCalendar) {
@@ -148,6 +175,10 @@ export class WeekCalendarComponent implements ControlValueAccessor {
     const date = moment(`${day.year}-${day.month}-${day.day}`, 'YYYY-M-D').format(this.dateExchangeFormat);
     this.value = date;
     this.onModelChange(date);
+
+    const dateString = `${day.year}-${day.month}-${day.day}`;
+    const datetime = moment(dateString, 'YYYY-M-D').utc().valueOf();
+    this.selectedDay.emit(datetime);
   }
 
   isHighlighted(momentDate: Moment): boolean {
@@ -162,11 +193,39 @@ export class WeekCalendarComponent implements ControlValueAccessor {
     return JSON.stringify(ngDateNow) === JSON.stringify(ngDate);
   }
 
+  isComplete(momentDate: Moment) {
+    const ngDate = this.momentToNgDate(momentDate);
+    const daysToCount = this.highlightedDays.filter(item =>
+      item.year === ngDate.year && item.month === ngDate.month && item.day === ngDate.day);
+
+    let timeSum = 0;
+    daysToCount.forEach(day => timeSum += day.time);
+
+    return timeSum >= WORKING_HOURS_DAY;
+  }
+
+  calculateTime(momentDate: Moment) {
+    const ngDate = this.momentToNgDate(momentDate);
+    const daysToCount = this.highlightedDays.filter(item =>
+      item.year === ngDate.year && item.month === ngDate.month && item.day === ngDate.day);
+
+    let timeSum = 0;
+    daysToCount.forEach(day => timeSum += day.time);
+
+    return timeSum;
+  }
+
   private momentToNgDate(momentDate: Moment): NgbDateStruct {
     return {
       day: Number(momentDate.format('D')),
       month: Number(momentDate.format('M')),
       year: Number(momentDate.format('YYYY')),
     };
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.highlightedDays && changes.highlightedDays.previousValue && changes.highlightedDays.previousValue.length === 0) {
+      this.calculateWeek();
+    }
   }
 }

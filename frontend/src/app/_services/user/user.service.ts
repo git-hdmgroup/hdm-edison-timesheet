@@ -4,6 +4,8 @@ import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
 import { AppUser } from 'src/app/_interfaces/entities/app-user';
 import { Observable } from 'rxjs';
+import { filterValidTo } from '../../_utils/utils';
+import { HourView } from '../../_interfaces/entities/hour-view';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +20,9 @@ export class UserService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} user {
-          users(where: {id: {_eq: "${id}"}}) {
+          users(where: {id: {_eq: ${id}}, ${filterValidTo()}}) {
             id id_position email cost_center_sender valid_from valid_to created_at updated_at name surname role full_name
+            id_responsible valid_from valid_to
           }
         }
       `
@@ -32,8 +35,9 @@ export class UserService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} user {
-          users(where: {email: {_eq: "${user}"}}) {
+          users(where: {email: {_eq: "${user}"}, ${filterValidTo()}}) {
             id id_position email cost_center_sender valid_from valid_to created_at updated_at name surname role full_name
+            id_responsible valid_from valid_to
           }
         }
       `
@@ -46,8 +50,9 @@ export class UserService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} user {
-          users {
+          users(where: {${filterValidTo()}}) {
             id id_position email cost_center_sender valid_from valid_to created_at updated_at name surname role full_name
+            id_responsible valid_from valid_to
           }
         }
       `
@@ -60,13 +65,29 @@ export class UserService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} user {
-          users(where: {role: {_eq: ${role}}}) {
+          users(where: {role: {_eq: ${role}}, ${filterValidTo()}}) {
             id id_position email cost_center_sender valid_from valid_to created_at updated_at name surname role full_name
+            id_responsible valid_from valid_to
           }
         }
       `
       })
       .pipe(map(result => result.data.users));
+  }
+
+  getAllView(isSubscription = false): Observable<AppUser[]> {
+    return this.apollo
+      .subscribe<any>({
+        query: gql`
+        ${isSubscription ? 'subscription' : 'query'} user {
+          users_view (where: {${filterValidTo()}}) {
+            id id_position email cost_center_sender valid_from valid_to created_at updated_at name surname role full_name
+            id_responsible responsible_full_name valid_from valid_to
+          }
+        }
+      `
+      })
+      .pipe(map(result => result.data.users_view));
   }
 
   save(user: AppUser, insert: boolean) {
@@ -80,12 +101,14 @@ export class UserService {
           full_name: "${user.name} ${user.surname}",
           cost_center_sender: "${user.cost_center_sender}",
           id_position: ${user.id_position},
+          id_responsible: ${user.id_responsible},
           valid_from: ${user.valid_from},
           valid_to: ${user.valid_to},
           updated_at: ${Date.now()}
         }) {
           returning {
             id id_position email cost_center_sender valid_from valid_to created_at updated_at name surname role full_name
+            id_responsible valid_from valid_to
           }
         }
       }`;
@@ -100,6 +123,7 @@ export class UserService {
           full_name: "${user.name} ${user.surname}",
           cost_center_sender: "${user.cost_center_sender}",
           id_position: ${user.id_position},
+          id_responsible: ${user.id_responsible},
           valid_from: ${user.valid_from},
           valid_to: ${user.valid_to},
           updated_at: ${Date.now()},
@@ -107,6 +131,7 @@ export class UserService {
         }) {
           returning {
             id id_position email cost_center_sender valid_from valid_to created_at updated_at name surname role full_name
+            id_responsible valid_from valid_to
           }
         }
       }`;
@@ -120,6 +145,7 @@ export class UserService {
 
   deactivate(user: AppUser) {
     user.active = 0;
+    user.valid_to = Date.now();
     return this.save(user, false);
   }
 }

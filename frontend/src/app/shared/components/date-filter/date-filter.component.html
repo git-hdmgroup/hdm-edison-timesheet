@@ -1,0 +1,17 @@
+<div class="btn-group btn-group-toggle mb-2" ngbRadioGroup>
+    <label ngbButtonLabel class="btn-primary">
+        <input ngbButton type="radio" (click)="noDate()"> {{ "app.generic.date.no-date" | translate }}
+    </label>
+    <label ngbButtonLabel class="btn-primary">
+        <input ngbButton type="radio" (click)="fromDate(0)"> {{ "app.generic.date.this-month" | translate }}
+    </label>
+    <label ngbButtonLabel class="btn-primary">
+        <input ngbButton type="radio" (click)="fromDate(1)"> {{ "app.generic.date.last-month" | translate }}
+    </label>
+    <label ngbButtonLabel class="btn-primary">
+        <input ngbButton type="radio" (click)="fromDate(3)"> {{ "app.generic.date.last-3-months" | translate }}
+    </label>
+    <label ngbButtonLabel class="btn-primary">
+        <input ngbButton type="radio" (click)="fromDate(12)"> {{ "app.generic.date.this-year" | translate }}
+    </label>
+</div>

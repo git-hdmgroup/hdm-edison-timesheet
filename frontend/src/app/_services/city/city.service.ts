@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { City } from '../../_interfaces/entities/city';
+import { filterValidTo } from '../../_utils/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,8 @@ export class CityService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} city {
-          cities(where: {id: {_eq: ${id}}}) {
-            id city scope id_geo_area valid_from valid_to created_at updated_at
+          cities(where: {id: {_eq: ${id}}, ${filterValidTo()}}) {
+            id city scope id_geo_area valid_from valid_to created_at updated_at valid_from valid_to
           }
         }
       `
@@ -32,8 +33,8 @@ export class CityService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} city {
-          cities {
-            id city scope id_geo_area valid_from valid_to created_at updated_at
+          cities(where: {${filterValidTo()}}) {
+            id city scope id_geo_area valid_from valid_to created_at updated_at valid_from valid_to
           }
         }
       `
@@ -42,7 +43,6 @@ export class CityService {
   }
 
   save(city: City, insert: boolean) {
-
     const updateQuery = gql`
       mutation city {
         update_cities(where: {id: {_eq: ${city.id}}}, _set: {
@@ -51,10 +51,12 @@ export class CityService {
           id_geo_area: "${city.id_geo_area}",
           valid_from: ${city.valid_from},
           valid_to: ${city.valid_to},
-          updated_at: ${Date.now()}
+          updated_at: ${Date.now()},
+          valid_from: ${city.valid_from},
+          valid_to: ${city.valid_to}
         }) {
           returning {
-            id city scope id_geo_area valid_from valid_to created_at updated_at
+            id city scope id_geo_area valid_from valid_to created_at updated_at valid_from valid_to
           }
         }
       }`;
@@ -68,10 +70,12 @@ export class CityService {
           valid_from: ${city.valid_from},
           valid_to: ${city.valid_to},
           updated_at: ${Date.now()},
-          created_at: ${Date.now()}
+          created_at: ${Date.now()},
+          valid_from: ${city.valid_from},
+          valid_to: ${city.valid_to}
         }) {
           returning {
-            id city scope id_geo_area valid_from valid_to created_at updated_at
+            id city scope id_geo_area valid_from valid_to created_at updated_at valid_from valid_to
           }
         }
       }`;
@@ -85,6 +89,7 @@ export class CityService {
 
   deactivate(city: City) {
     city.active = 0;
+    city.valid_to = Date.now();
     return this.save(city, false);
   }
 }

@@ -18,8 +18,8 @@ export class ResponsibleService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} responsible {
-          responsibles(where: {id: {_eq: "${id}"}}) {
-            id id_user id_position email valid_from valid_to created_at updated_at
+          responsibles(where: {id: {_eq: ${id}}}) {
+            id id_user id_position email full_name valid_from valid_to created_at updated_at
           }
         }
       `
@@ -33,7 +33,7 @@ export class ResponsibleService {
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} responsible {
           responsibles {
-            id id_user id_position email valid_from valid_to created_at updated_at
+            id id_user id_position email full_name valid_from valid_to created_at updated_at
           }
         }
       `
@@ -47,13 +47,14 @@ export class ResponsibleService {
         update_responsibles(where: {id: {_eq: ${responsible.id}}}, _set: {
           id_user: ${responsible.id_user},
           email: "${responsible.email}",
+          full_name: "${responsible.full_name}",
           id_position: ${responsible.id_position},
           valid_from: ${responsible.valid_from},
           valid_to: ${responsible.valid_to},
           updated_at: ${Date.now()}
         }) {
           returning {
-            id id_user id_position email valid_from valid_to created_at updated_at
+            id id_user id_position email full_name valid_from valid_to created_at updated_at
           }
         }
       }`;
@@ -63,6 +64,7 @@ export class ResponsibleService {
         insert_responsibles(objects: {
           id_user: ${responsible.id_user},
           email: "${responsible.email}",
+          full_name: "${responsible.full_name}",
           id_position: ${responsible.id_position},
           valid_from: ${responsible.valid_from},
           valid_to: ${responsible.valid_to},
@@ -70,7 +72,7 @@ export class ResponsibleService {
           created_at: ${Date.now()}
         }) {
           returning {
-            id id_user id_position email valid_from valid_to created_at updated_at
+            id id_user id_position email full_name valid_from valid_to created_at updated_at
           }
         }
       }`;

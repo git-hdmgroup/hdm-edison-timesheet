@@ -54,12 +54,12 @@ export const NAV_ITEMS: NavItem[] = [
     role: 2,
     exact: true,
   },
-  // {
-  //   text: 'nav.reports',
-  //   linkTo: '/reports',
-  //   role: 1,
-  //   exact: true,
-  // },
+  {
+    text: 'nav.reports',
+    linkTo: '/reports',
+    role: 1,
+    exact: true,
+  },
   // {
   //   text: 'nav.admin',
   //   linkTo: '/admin',

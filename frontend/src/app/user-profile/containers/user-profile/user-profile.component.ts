@@ -4,7 +4,6 @@ import { UserService } from '../../../_services/user/user.service';
 import { AuthService } from '../../../_services/auth/auth.service';
 import { AppUser } from '../../../_interfaces/entities/app-user';
 import { Subscription } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-user-profile',
@@ -60,6 +59,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       role: this.profile.role,
       full_name: this.profile.full_name,
       id_position: this.profile.id_position,
+      id_responsible: this.profile.id_responsible,
       cost_center_sender: this.profile.cost_center_sender,
       valid_from: this.profile.valid_from,
       valid_to: this.profile.valid_to

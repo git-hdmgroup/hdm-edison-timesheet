@@ -4,14 +4,15 @@
         <app-week-calendar
                 formControlName="weekDayCalendar"
                 [highlightedDays]="highlight"
-                [showWeekNumber]="true">
+                [showWeekNumber]="true"
+                (selectedDay)="filter($event)">
         </app-week-calendar>
-        <button ngbButton type="submit">Search</button>
     </form>
 
     <app-table *ngIf="hoursView"
-            [data]="hoursView"
+            [data]="hoursViewFiltered"
             [columns]="columns"
+            [filterVisible]="false"
             (add)="add()"
             (edit)="openDetail($event)"
             (remove)="remove($event)"></app-table>

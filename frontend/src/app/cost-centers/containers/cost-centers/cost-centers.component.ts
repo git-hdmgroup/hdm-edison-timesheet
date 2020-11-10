@@ -5,8 +5,6 @@ import { Router } from '@angular/router';
 import { CostCenter } from '../../../_interfaces/entities/cost-center';
 import { CostCenterService } from '../../../_services/cost-center/cost-center.service';
 import { BupTableColumns } from '../../../shared/components/table/table.component';
-import { IsActivePipe } from '../../../shared/pipes/is-active/is-active.pipe';
-import { CostCenterTypePipe } from '../../../shared/pipes/cost-center-type/cost-center-type.pipe';
 
 @Component({
   selector: 'app-cost-centers',

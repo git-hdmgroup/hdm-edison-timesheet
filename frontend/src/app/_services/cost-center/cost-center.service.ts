@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import gql from 'graphql-tag';
 import { map, tap } from 'rxjs/operators';
 import { CostCenter } from '../../_interfaces/entities/cost-center';
+import { filterValidTo } from '../../_utils/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class CostCenterService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} costCenter {
-          cost_centers(where: {id: {_eq: ${id}}}) {
-            id name description garrison id_geo_area valid_from valid_to created_at updated_at 
+          cost_centers(where: {id: {_eq: ${id}}, ${filterValidTo()}}) {
+            id name description garrison id_geo_area valid_from valid_to created_at updated_at valid_from valid_to
           }
         }
       `
@@ -31,8 +32,8 @@ export class CostCenterService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} costCenter {
-          cost_centers {
-            id name description garrison id_geo_area valid_from valid_to created_at updated_at 
+          cost_centers(where: {${filterValidTo()}}) {
+            id name description garrison id_geo_area valid_from valid_to created_at updated_at valid_from valid_to
           }
         }
       `
@@ -53,7 +54,7 @@ export class CostCenterService {
           updated_at: ${Date.now()}
         }) {
           returning {
-            id name description garrison id_geo_area valid_from valid_to created_at updated_at 
+            id name description garrison id_geo_area valid_from valid_to created_at updated_at valid_from valid_to
           }
         }
       }`;
@@ -71,7 +72,7 @@ export class CostCenterService {
           updated_at: ${Date.now()}
         }) {
           returning {
-            id name description garrison id_geo_area valid_from valid_to created_at updated_at 
+            id name description garrison id_geo_area valid_from valid_to created_at updated_at valid_from valid_to
           }
         }
       }`;
@@ -85,6 +86,7 @@ export class CostCenterService {
 
   deactivate(costCenter: CostCenter) {
     costCenter.active = 0;
+    costCenter.valid_to = Date.now();
     return this.save(costCenter, false);
   }
 }

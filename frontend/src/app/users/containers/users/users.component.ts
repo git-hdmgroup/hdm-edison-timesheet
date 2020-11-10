@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { BupTableColumns } from '../../../shared/components/table/table.component';
 import { RolePipe } from '../../../shared/pipes/role/role.pipe';
-import { IsActivePipe } from '../../../shared/pipes/is-active/is-active.pipe';
 import { commonColumns } from '../../../_constants/table-commons';
 
 @Component({
@@ -34,6 +33,7 @@ export class UsersComponent implements OnInit, OnDestroy {
         return pipe.transform(item.role);
       }
     },
+    {name: 'responsible_full_name', label: 'app.users.responsible_full_name'},
     ...commonColumns
   ];
 
@@ -42,7 +42,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.userSubscription = this.user.getAll(true).subscribe((data) => {
+    this.userSubscription = this.user.getAllView(true).subscribe((data) => {
       this.users = data;
     });
   }

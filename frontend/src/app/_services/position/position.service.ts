@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Position } from '../../_interfaces/entities/position';
 import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
+import { filterValidTo } from '../../_utils/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class PositionService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} position {
-          positions(where: {id: {_eq: ${id}}}) {
-            id name cost valid_from valid_to updated_at created_at
+          positions(where: {id: {_eq: ${id}}, ${filterValidTo()}) {
+            id name cost valid_from valid_to updated_at created_at valid_from valid_to
           }
         }
       `
@@ -31,8 +32,8 @@ export class PositionService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} position {
-          positions {
-            id name cost valid_from valid_to updated_at created_at
+          positions(where: {${filterValidTo()}}) {
+            id name cost valid_from valid_to updated_at created_at valid_from valid_to
           }
         }
       `
@@ -51,7 +52,7 @@ export class PositionService {
           updated_at: ${Date.now()}
         }) {
           returning {
-            id name cost valid_from valid_to updated_at created_at
+            id name cost valid_from valid_to updated_at created_at valid_from valid_to
           }
         }
       }`;
@@ -67,7 +68,7 @@ export class PositionService {
           updated_at: ${Date.now()}
         }) {
           returning {
-            id name cost valid_from valid_to updated_at created_at
+            id name cost valid_from valid_to updated_at created_at valid_from valid_to
           }
         }
       }`;
@@ -81,6 +82,7 @@ export class PositionService {
 
   deactivate(position: Position) {
     position.active = 0;
+    position.valid_to = Date.now();
     return this.save(position, false);
   }
 }

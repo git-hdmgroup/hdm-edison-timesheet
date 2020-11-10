@@ -4,8 +4,8 @@ import { Observable } from 'rxjs';
 import gql from 'graphql-tag';
 import { map } from 'rxjs/operators';
 import { Project } from '../../_interfaces/entities/project';
-import { HourView } from '../../_interfaces/entities/hour-view';
 import { ProjectView } from '../../_interfaces/entities/project-view';
+import { filterValidTo } from '../../_utils/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,9 @@ export class ProjectService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} project {
-          projects(where: {id: {_eq: ${id}}}) {
+          projects(where: {id: {_eq: ${id}}, ${filterValidTo()}}) {
             id city_id cost_center_id cost_asset typology description active valid_from valid_to created_at updated_at
+            valid_from valid_to
           }
         }
       `
@@ -34,8 +35,9 @@ export class ProjectService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} project {
-          projects {
+          projects(where: {${filterValidTo()}}) {
             id city_id cost_center_id cost_asset typology description active valid_from valid_to created_at updated_at
+            valid_from valid_to
           }
         }
       `
@@ -48,9 +50,9 @@ export class ProjectService {
       .subscribe<any>({
         query: gql`
         ${isSubscription ? 'subscription' : 'query'} project {
-          projects_view {
+          projects_view(where: {${filterValidTo()}}) {
             id active valid_from valid_to created_at updated_at
-            cost_center_name project_name city city_id cost_center_id cost_asset typology
+            cost_center_name project_name city city_id cost_center_id cost_asset typology valid_from valid_to
           }
         }
       `
@@ -69,10 +71,13 @@ export class ProjectService {
           typology: "${project.typology}",
           description: "${project.description}",
           active: ${project.active},
-          updated_at: ${Date.now()}
+          updated_at: ${Date.now()},
+          valid_from: ${project.valid_from},
+          valid_to: ${project.valid_to}
         }) {
           returning {
             id city_id cost_center_id cost_asset typology description active valid_from valid_to created_at updated_at
+            valid_from valid_to
           }
         }
       }`;
@@ -93,6 +98,7 @@ export class ProjectService {
         }) {
           returning {
             id city_id cost_center_id cost_asset typology description active valid_from valid_to created_at updated_at
+            valid_from valid_to
           }
         }
       }`;
@@ -106,6 +112,7 @@ export class ProjectService {
 
   deactivate(project: Project) {
     project.active = 0;
+    project.valid_to = Date.now();
     return this.save(project, false);
   }
 }

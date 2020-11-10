@@ -11,11 +11,13 @@
         </div>
     </div>
     <div [id]="'week-calendar-' + day.dayName" class="d-inline-block bup-week-calendar__custom-day" *ngFor="let day of week"
-         [class.bup-week-calendar__highlighted]="day.highlighted"
+         [class.bup-week-calendar__completed]="day.completed"
+         [class.bup-week-calendar__highlighted]="day.highlighted && !day.completed"
          [class.bup-week-calendar__today]="day.today"
          [class.bup-week-calendar__selected]="day.selected"
          (click)="select(day)">
         <div>{{ day.day }}</div>
         <div class="bup-week-calendar__day-letter">{{ day.dayName }}</div>
+        <div class="bup-week-calendar__day-hours">{{ day.time }}</div>
     </div>
 </div>

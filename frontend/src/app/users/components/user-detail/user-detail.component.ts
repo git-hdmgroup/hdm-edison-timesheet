@@ -4,7 +4,7 @@ import { AppUser } from '../../../_interfaces/entities/app-user';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../_services/user/user.service';
 import { AuthService } from '../../../_services/auth/auth.service';
-import { ROLES } from '../../../_constants/roles';
+import { ROLES, ROLES_IDX } from '../../../_constants/roles';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { PositionService } from '../../../_services/position/position.service';
@@ -19,9 +19,11 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   userSubscription: Subscription;
   positionSubscription: Subscription;
+  responsibleSubscription: Subscription;
 
   selectedUser: AppUser;
   positions: Position[] = [];
+  responsibles: AppUser[] = [];
   roles = ROLES;
   isLoadingData = false;
   isNewUser = false;
@@ -38,7 +40,8 @@ export class UserDetailComponent implements OnInit, OnDestroy {
     cost_center_sender: ['', Validators.required],
     valid_from: ['', Validators.required],
     valid_to: ['', Validators.required],
-    position: ['', Validators.required]
+    position: ['', Validators.required],
+    responsible: ['', Validators.required]
   });
 
   constructor(private route: ActivatedRoute,
@@ -55,6 +58,11 @@ export class UserDetailComponent implements OnInit, OnDestroy {
         this.positions = data;
       });
 
+      // Responsibles.
+      this.responsibleSubscription = this.user.getAllByRole(ROLES[ROLES_IDX.RESPONSIBLE].role_id, false).subscribe((data) => {
+        this.responsibles = data;
+      });
+
       const id = paramMap.get('id');
       if (id === 'new') {
         this.isNewUser = true;
@@ -69,6 +77,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
             valid_from: moment(this.selectedUser.valid_from).format('YYYY-MM-DD'),
             valid_to: moment(this.selectedUser.valid_to).format('YYYY-MM-DD'),
             position: this.selectedUser.id_position,
+            responsible: this.selectedUser.id_responsible,
             role: this.selectedUser.role
           });
         });
@@ -79,6 +88,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.userSubscription?.unsubscribe();
     this.positionSubscription?.unsubscribe();
+    this.responsibleSubscription?.unsubscribe();
   }
 
   submit() {
@@ -91,6 +101,7 @@ export class UserDetailComponent implements OnInit, OnDestroy {
       id: this.isNewUser ? undefined : this.selectedUser.id,
       role: this.form.value.role,
       id_position: this.form.value.position,
+      id_responsible: this.form.value.responsible,
       cost_center_sender: this.form.value.cost_center_sender,
       valid_from: moment(this.form.value.valid_from, 'YYYY-MM-DD').utc().valueOf(),
       valid_to: moment(this.form.value.valid_to, 'YYYY-MM-DD').utc().valueOf()

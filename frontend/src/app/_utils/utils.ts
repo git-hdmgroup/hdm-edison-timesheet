@@ -29,3 +29,6 @@ export const getToday = (format: string) => {
   return moment().format(format);
 };
 
+export const filterValidTo = () => {
+  return `valid_to: {_gte: ${Date.now()}}`;
+};

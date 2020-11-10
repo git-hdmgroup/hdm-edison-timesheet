@@ -7,5 +7,7 @@ export interface AppUser extends BaseEntity {
   role: number;
   surname: string;
   cost_center_sender: string;
+  id_responsible: number;
+  responsible_full_name?: string;
   full_name?: string;
 }

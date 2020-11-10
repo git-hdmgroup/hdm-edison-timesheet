@@ -1,6 +1,23 @@
+<div class="text-left">{{ title | translate }}</div>
+<div class="container">
+    <form [formGroup]="formGroup">
+        <div *ngIf="filterVisible" class="row">
+            <div class="form-group">
+                <label>{{ 'app.generic.filter' | translate }}</label>
+                <input class="form-control" type="text" formControlName="filter"/>
+            </div>
+        </div>
+    </form>
+</div>
 <div class="row mb-2">
-    <div class="col h2 text-left">{{ title | translate }}</div>
     <div class="col text-right">
+        <button *ngIf="exportButtonVisible"
+                type="button"
+                class="btn btn-sm btn-primary margin-right-sm"
+                [disabled]="exportButtonDisabled"
+                (click)="handleExport()">
+            <fa-icon [icon]="iconExport" [fixedWidth]="true"></fa-icon>
+        </button>
         <button *ngIf="addButtonVisible"
                 type="button"
                 class="btn btn-sm btn-primary margin-right-sm"
@@ -10,16 +27,17 @@
         </button>
     </div>
 </div>
-<div>
+<div class="autoOverflow">
     <table class="table table-striped">
         <thead>
         <tr>
             <th *ngFor="let column of columns" scope="col">{{ column.label | translate }}</th>
-            <th scope="col" class="text-right">{{ 'app.cities.action' | translate }}</th>
+            <th *ngIf="editButtonVisible && removeButtonVisible" scope="col"
+                class="text-right">{{ 'app.cities.action' | translate }}</th>
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let item of data">
+        <tr *ngFor="let item of filteredData">
             <td *ngFor="let column of columns">
                 <span *ngIf="column.transform; else transformationLess">
                     {{ column.prefix | translate }}
@@ -28,7 +46,7 @@
                 </span>
                 <ng-template #transformationLess>{{ item[column.name] }}</ng-template>
             </td>
-            <td class="text-right text-nowrap">
+            <td *ngIf="editButtonVisible && removeButtonVisible" class="text-right text-nowrap">
                 <button *ngIf="editButtonVisible"
                         type="button"
                         class="btn btn-sm btn-primary margin-right-sm"

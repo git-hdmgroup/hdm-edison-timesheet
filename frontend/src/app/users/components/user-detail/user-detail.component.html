@@ -66,6 +66,19 @@
             </div>
 
             <div class="flex-column mr-2">
+                <app-select
+                        label="app.users.detail.responsible"
+                        formControlName="responsible"
+                        fieldKey="id"
+                        fieldValue="full_name"
+                        [showValidation]="false"
+                        [items]="responsibles"
+                        [translateText]="true"
+                        [isLoading]="isLoadingData">
+                </app-select>
+            </div>
+
+            <div class="flex-column mr-2">
                 <app-datepicker
                         label="app.generic.valid_from"
                         formControlName="valid_from">

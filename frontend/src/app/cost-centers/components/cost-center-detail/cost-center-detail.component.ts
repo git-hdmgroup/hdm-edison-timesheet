@@ -65,7 +65,7 @@ export class CostCenterDetailComponent implements OnInit, OnDestroy {
 
     const payload: CostCenter = {
       name: this.form.value.name,
-      description: this.form.value.type,
+      description: this.form.value.description,
       id_geo_area: this.form.value.id_geo_area,
       garrison: this.form.value.garrison,
       id: this.isNewCostCenter ? undefined : this.selectedCostCenter.id,

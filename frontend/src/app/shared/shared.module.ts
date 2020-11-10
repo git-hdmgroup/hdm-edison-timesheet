@@ -28,6 +28,7 @@ import { BooleanInputComponent } from './components/boolean-input/boolean-input.
 import { CalendarComponent } from './components/calendar/calendar.component';
 import { WeekCalendarComponent } from './components/week-calendar/week-calendar.component';
 import { TableComponent } from './components/table/table.component';
+import { DateFilterComponent } from './components/date-filter/date-filter.component';
 
 const NG_BOOTSTRAP_MODULES = [
   NgbModalModule,
@@ -35,7 +36,7 @@ const NG_BOOTSTRAP_MODULES = [
   NgbDatepickerModule,
   NgbButtonsModule,
   NgbNavModule,
-  NgbAlertModule,
+  NgbAlertModule
 ];
 
 @NgModule({
@@ -52,6 +53,7 @@ const NG_BOOTSTRAP_MODULES = [
     CalendarComponent,
     WeekCalendarComponent,
     TableComponent,
+    DateFilterComponent,
 
     // Pipes.
     IsActivePipe,
@@ -93,6 +95,7 @@ const NG_BOOTSTRAP_MODULES = [
     CalendarComponent,
     WeekCalendarComponent,
     TableComponent,
+    DateFilterComponent,
 
     // Pipes.
     IsActivePipe,

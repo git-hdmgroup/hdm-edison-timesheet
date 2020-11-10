@@ -41,8 +41,7 @@ export class HourDetailComponent implements OnInit, OnDestroy {
     date: ['', Validators.required],
     project: ['', Validators.required],
     description: ['', Validators.required],
-    time: ['', Validators.required],
-    active: ['', Validators.required]
+    time: ['', Validators.required]
   });
 
   constructor(private route: ActivatedRoute,
@@ -72,7 +71,7 @@ export class HourDetailComponent implements OnInit, OnDestroy {
             project: this.selectedHour.project_id,
             description: this.selectedHour.description,
             time: fromMilliseconds('h', this.selectedHour.time),
-            active: this.selectedHour.active
+            active: 1
           });
         });
       }
@@ -92,7 +91,7 @@ export class HourDetailComponent implements OnInit, OnDestroy {
       project_id: this.form.value.project,
       description: this.form.value.description,
       time: toMilliseconds('h', this.form.value.time),
-      active: this.form.value.active,
+      active: 1,
       id: this.isNewHour ? undefined : this.selectedHour.id,
       user_id: this.currentUser.id,
       valid_from: 0,
