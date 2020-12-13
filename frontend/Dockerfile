@@ -12,7 +12,7 @@ WORKDIR /usr/frontend
 # Installing dependencies.
 COPY ./package*.json /usr/frontend/
 RUN npm install
-RUN npm update
+#RUN npm update
 
 # Copy source into image.
 COPY ./ /usr/frontend/
