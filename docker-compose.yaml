@@ -24,18 +24,15 @@ services:
       HASURA_GRAPHQL_ADMIN_SECRET: admin
       HASURA_GRAPHQL_JWT_SECRET: '{ "type": "HS256", "key": "supercalifragilistichespiralidoso" }'
   node-red:
-    image: nodered/node-red:1.0.4-12-minimal
+    image: docker_repository/edison-node-red
     restart: always
     ports:
     - "1880:1880"
-    volumes:
-    - node-red_data:/data
     environment:
       TZ: UTC
       NODE_RED_ENABLE_SAFE_MODE: "false"
       NODE_RED_ENABLE_PROJECTS: "false"
-      NODE_OPTIONS:
-      FLOWS: auth-flow.json
+      FLOWS: edison-flows.json
     depends_on:
     - "postgres"
     - "graphql-engine"
@@ -43,7 +40,7 @@ services:
     image: docker_repository/edison-fe
     restart: always
     ports:
-      - "80:4200"
+      - "80:80"
     depends_on:
       - "postgres"
       - "graphql-engine"
@@ -51,5 +48,3 @@ services:
 
 volumes:
   db_data:
-  node-red_data:
-

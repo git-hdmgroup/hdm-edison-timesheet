@@ -34,7 +34,3 @@ COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copying source into web server root.
 COPY --from=0 /usr/frontend/dist/frontend /usr/share/nginx/html
-
-# Exposing ports.
-EXPOSE 80
-EXPOSE 4200
