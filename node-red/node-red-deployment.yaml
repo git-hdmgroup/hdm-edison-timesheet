@@ -21,7 +21,7 @@ spec:
       persistentVolumeClaim:
         claimName: node-red-pvc
       containers:
-      - image: node-red/node-red:1.0.4-12-minimal
+      - image: nodered/node-red:1.0.4-12-minimal
         imagePullPolicy: IfNotPresent
         name: node-red
         env:
